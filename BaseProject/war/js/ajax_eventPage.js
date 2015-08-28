@@ -79,11 +79,10 @@ app.controller('eventController', function($scope, $http) {
 	//// DELETE
 	$scope.removeTodoAt = function (position){
 		$scope.todoList.splice(position,1);
-		
 	}
 	///// EDIT
 	$scope.editTodoAt = function (position){
-		alert("Edit Todo at : "+position);
+		$("#myModal").show();
 		
 	}
 	///// ADD
