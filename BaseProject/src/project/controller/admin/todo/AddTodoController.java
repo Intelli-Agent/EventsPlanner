@@ -15,12 +15,9 @@ public class AddTodoController extends Controller {
     public Navigation run() throws Exception {
         TodoService service = new TodoService();
         JSONObject json = new JSONObject();
-        json.put("title", "Test Todo");
-        json.put("description", "Test Description");
-        json.put("total_quantity", 120);
         TodoDto todo = new TodoDto();
         try {
-           // json = new JSONObject((String)this.requestScope("data"));
+            json = new JSONObject((String)this.requestScope("data"));
             todo.setTitle(json.getString("title"));
             todo.setDescription(json.getString("description"));
             todo.setFinished_quantity(0);
@@ -33,7 +30,9 @@ public class AddTodoController extends Controller {
         json.put("todo", todo.toJSON());
         json.put("errorList", todo.getErrorList());
         response.setContentType("application/json");
+        response.addHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().write(json.toString());
+        
         return null;
     }
 }

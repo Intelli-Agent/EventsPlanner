@@ -25,7 +25,8 @@ public class EventTodoService {
         model.setEventID(et.getEventID());
         model.setTodoId(et.getTodoId());
         model.setEventTitle((new EventModelDao()).getEvent(model.getEventID()).getEventName());
-        TodoModel todo = (new TodoDao()).getTodoById(model.getTodoId());
+        TodoDao todoDao = new TodoDao();
+        TodoModel todo = todoDao.getTodoById(model.getTodoId());
         model.setTodoTitle(todo.getTitle());
         model.setTodoDescription(todo.getDescription());
         model.setTodoTotal_quantity(todo.getTotal_quantity());

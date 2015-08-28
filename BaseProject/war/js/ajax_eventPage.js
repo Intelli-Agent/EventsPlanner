@@ -29,9 +29,9 @@ app.controller('eventController', function($scope, $http) {
 	};
 	function getProgess() {
 		var totalProgress = 0;
-		var taskRatio = 100 / $scope.todoList.length;
-		for(var i = 0; i < $scope.todoList.length; i++) {
-			totalProgress += ($scope.todoList[i].finished_quantity / $scope.todoList[i].total_quantity) * taskRatio;
+		var taskRatio = 100 / $scope.tempTodoList.length;
+		for(var i = 0; i < $scope.tempTodoList.length; i++) {
+			totalProgress += ($scope.tempTodoList[i].finished_quantity / $scope.tempTodoList[i].total_quantity) * taskRatio;
 		}
 		return totalProgress;
 	};
@@ -67,6 +67,7 @@ app.controller('eventController', function($scope, $http) {
 		$http(todoInfoAJAX).
 		  then(function(response) {
 			    $scope.tempTodoList = response.data.todoList;
+			    showProgress();
 			  },
 			  function(response) {
 				    console.log("An error has occurred in loading the TODO list.");
@@ -90,8 +91,7 @@ app.controller('eventController', function($scope, $http) {
 		alert("Load TODO modal for adding TODOS to this event");
 		
 	}
-	loadEvent()
-	showProgress();
+	loadEvent();
 });
 
 $(document).ready(function() {
