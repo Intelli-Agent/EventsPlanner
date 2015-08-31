@@ -19,8 +19,11 @@ public class AddEventTodoController extends Controller {
         String requestParam = this.request.getParameter("data");
         try{
             json = new JSONObject((String) this.requestScope("data"));
+          
             eventTodo.setEventID(json.getInt("eventID"));
+            //eventTodo..eventTodo.eventTodo.setEventID(1);
             eventTodo.setTodoId(json.getString("todoID"));
+            //eventTodo.setTodoId("0");
             service.addEventTodo(eventTodo);
         }catch(Exception e){
             e.printStackTrace();
