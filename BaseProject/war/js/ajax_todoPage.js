@@ -2,21 +2,6 @@
 //@Author: Caparoso, AJY & Arreglo, CAF
 //@Date: August 15, 2015
 //@Revision Date: August 27, 2015
-
-//@File: ajax_todoPage.js
-//@Author: Osias Ted Ian
-//@Revision Date: August 31, 2015
-
-var todoPageApp = angular.module('eventPage', []);
-todoPageApp.controller('todotController', function($scope, $http) {
-	
-	
-});
-todoPageApp.controller('modalController', function($scope, $http) {
-	
-	
-});
-/*
 var array0fObj_todoList = [];
 
 $(document).ready(function() {
@@ -249,4 +234,3 @@ function editScript(indexNumber) {
 	$('#todoTitle').val(array0fObj_todoList[indexNumber].todoName);
 	$('#todoDescription').val(array0fObj_todoList[indexNumber].todoDescription);
 }
-*/
