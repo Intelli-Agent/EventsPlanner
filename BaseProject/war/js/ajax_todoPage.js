@@ -2,6 +2,53 @@
 //@Author: Caparoso, AJY & Arreglo, CAF
 //@Date: August 15, 2015
 //@Revision Date: August 27, 2015
+
+//@File: ajax_todoPage.js
+//@Author: Osias Ted Ian
+//@Revision Date: August 31, 2015
+
+var todoPageApp = angular.module('todoPageApp', []);
+todoPageApp.controller('todoController', function($scope, $http) {
+	todoList =  [
+                  {total_quantity:"1", progress_quantity:"1", title:"Arrange Chairs", description:"A good party comes with good chairs."},
+                  {total_quantity:"1", progress_quantity:"0", title:"Buy a Cake",  description:"Nothing is better than a cake."},
+                  {total_quantity:"13", progress_quantity:"8", title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
+                  {total_quantity:"5", progress_quantity:"2", title:"Buy 5 Cans of Soda",  description:"Party with friends is fun with poping sodas."},
+                  {total_quantity:"1",  progress_quantity:"0", title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
+                 ];
+	$scope.tempTodoList = todoList; 
+	$scope.searchedString = "";
+	$scope.getAll = function(){
+		$scope.tempTodoList = todoList;
+		alert("ALL Checked");
+	};
+	$scope.getAction = function(){
+		var todos = [];
+		for(var i=0;i<todoList.length;i++)
+			{
+				if(todoList[i].total_quantity == 1)
+					todos.push($scope.tempTodoList[i]);
+			}
+		$scope.tempTodoList = todos;
+		alert("Action Checked");
+	};
+	$scope.getQuantity = function(){
+		var todos = [];
+		for(var i=0;i<todoList.length;i++)
+			{
+				if(todoList[i].total_quantity >= 2)
+					todos.push(todoList[i]);
+			}
+		$scope.tempTodoList = todos;
+		alert("Quantity Checked");
+	};
+	
+});
+todoPageApp.controller('modalController', function($scope, $http) {
+	
+	
+});
+/*
 var array0fObj_todoList = [];
 
 $(document).ready(function() {
@@ -234,3 +281,4 @@ function editScript(indexNumber) {
 	$('#todoTitle').val(array0fObj_todoList[indexNumber].todoName);
 	$('#todoDescription').val(array0fObj_todoList[indexNumber].todoDescription);
 }
+*/

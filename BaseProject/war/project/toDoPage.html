@@ -5,7 +5,7 @@
 -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="todoPageApp">
 
 <head>
 
@@ -43,7 +43,7 @@
 
 </head>
 
-<body id="page-top" ng-app="" bgcolor="#B2C6E8">
+<body id="page-top"  bgcolor="#B2C6E8">
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -86,7 +86,7 @@
             <h1>Todos</h1>
         </div>
     </section>
-	<section id="container" style="padding:0px">
+	<section id="container" style="padding:0px" ng-controller="todoController">
 	    <div class="container">
 		    <div class="row">
 		    	<h1>Todo List</h1>
@@ -97,7 +97,7 @@
 			            <form action="" class="search-form">
 			                <div class="form-group has-feedback">
 			                    <label for="search" class="sr-only">Search</label>
-			                    <input type="text" class="form-control" name="search" id="search" placeholder="Search">
+			                    <input ng-model="searchedString" ng-changed="search()" type="text" class="form-control" name="search" id="search" placeholder="Search">
 			                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 			                </div>
 			            </form>
@@ -112,9 +112,9 @@
 		    	<tr>
 			    	<td align="left">
 			    		<form action="" class="radio">
-				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Allsss" id="All" checked>All&nbsp;&nbsp;
-				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Action" id="Action">Action&nbsp;&nbsp;			    		
-				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Quantity" id="Quantity">Quantity
+				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Allsss" id="All" ng-click="getAll()" checked>All&nbsp;&nbsp;
+				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Action" id="Action" ng-click="getAction()">Action&nbsp;&nbsp;			    		
+				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Quantity" id="Quantity" ng-click="getQuantity()">Quantity
 				    		
 			    		</form>
 					</td>
@@ -122,10 +122,39 @@
 		    </table>
 	    </div>
 	    
-	    <div class="container">
-	   	<div class="row" id="TodoListContainer">
-		</div>
-    </div>
+	    <div class="container" >
+	    	<div class="row" id="TodoListContainer">
+		   		<table class='table' align='center' style='width:1200px;'>
+			   		<tr>
+						<td></td>
+						<td><b>Name</b></td>
+						<td><b>Description</b></td>
+						<td></td>
+					</tr>
+			   		<tr ng-if="tempTodoList.length == 0">
+			   			<td colspan='5' align='center'><br>There are no available todos right now.<br><br>
+			   			</td>
+			   		</tr>
+			   		<tr ng-repeat = "todo in tempTodoList" ng-if="todo.title.indexOf(searchedString) > -1">
+			   			<div ng-if="")>
+			   			<td></td>
+			   			<td>  {{todo.title}} </td> 
+						<td>	{{todo.description}}  
+							<!-- array0fObj_todoList[i].todoDescription-->
+							</td>
+					    <td>
+			   				<a href='#editModal'>
+							<button type='button' value='Edit' class='btn btn-primary' style='background:#6f6f6f;color:white;width:60px;' onClick='editScript("+ i +")'>Edit</button>
+							</a>
+							<a href='#deleteModal'>
+							<input type='submit' value='X' class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'>
+							</a>
+						</td>
+						</div>
+					</tr>
+				</table>
+			</div>
+	    </div>
     
 
 <div id="editModal" class="modalDialog">
