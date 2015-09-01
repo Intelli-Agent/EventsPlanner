@@ -1,4 +1,5 @@
 package project.service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,30 +28,25 @@ public class TodoService {
      *  Database Access Object assigned to TodoService.
      */
     private TodoDao dao = new TodoDao();
-    /**
-     * Gets all todos that contains String n in its title using TodoDao. <br> <br>
-     * Ex.<br>
-     * <br>
-     *      "ma" -> (Make ballpen, Marinate Chicken, and etc.)
-     * @param s
-     *            the string reference
-     * @return List of todos.
-     */
-    public List<TodoModel> getAllTodoContaining(String s)
-    {
-        return null;
-        
-    }
+    
     /**
      * Gets all todos (default ascending order) using TodoDao.
      * 
      * @return List of todos.
      */
-    public String getAllTodos()
+    public List<TodoDto> getAllTodos()
     {
         List<TodoModel> models   = dao.getAllTodos();
-        TodoModelMeta tm = new TodoModelMeta();
-        return tm.modelsToJson(models);
+        List<TodoDto> dtos = new ArrayList<TodoDto>();
+        for(TodoModel model : models){
+            TodoDto dto = new TodoDto();
+            dto.setTotal_quantity(model.getTotal_quantity());
+            dto.setTitle(model.getTitle());
+            dto.setDescription(model.getDescription());
+            dto.setId(model.getId());
+            dtos.add(dto);
+        }
+        return dtos;
     }
     public TodoDto getTodoByTitle(TodoDto todo)
     {

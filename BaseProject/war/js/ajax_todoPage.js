@@ -36,13 +36,23 @@ todoPageApp.controller('todoController', function($scope, $http) {
 		$http.get("http://localhost:8888/admin/event/getAll")
 	    .success(function(response) {
 	    	$scope.allEvents = response.events;
-	    	
 	    });
 	}
+	function loadTodos(){
+		$http.get("http://localhost:8888/admin/todo/getAllTodos")
+	    .success(function(response) {
+	    	todoList = response.todos;
+			$scope.tempTodoList = todoList;
+	    });
+		
+	};
 	// Button Triggers
 	$scope.addTodo = function(){
 		var obj =$scope.addTodoInfo; 
 		alert(obj.title + ""+ obj.description + ""+ obj.description);
+	};
+	$scope.loadDeleteModalData = function(todoID){
+		$scope.deleteTodoId = todoID;
 	};
 	$scope.loadEditModalData = function(todoID){
 		var todo = null;
@@ -59,16 +69,14 @@ todoPageApp.controller('todoController', function($scope, $http) {
 			$scope.editTodoInfo.description  =  todo.description;
 		}
 	};
-	$scope.loadDeleteModalData = function(todoID){
-		$scope.deleteTodoId = todoID; 
-	};
+	
 	/// CRUD
 	$scope.deleteTodo = function(todoId){
 		var req = {
 				url:'',
 				method:'POST',
 				params: data =  JSON.stringify({
-					id:info.id
+					id:$scope.deleteTodoId
 				})
 			};
 			$http(req).then(
@@ -84,23 +92,28 @@ todoPageApp.controller('todoController', function($scope, $http) {
 			);
 		
 	}
-	$scope.editTodo = function()
+	$scope.addTodo = function()
 	{
 		var info = $scope.editTodoInfo;
 		var req = {
-			url:'',
+			url:'http://localhost:8888/admin/todo/updateTodo',
 			method:'POST',
-			params: data =  JSON.stringify({
-				id:info.id,
-				total_quantity:info.total_quantity,
-				title:info.title,
-				description:info.description
-			})
+			params: {
+				'data':
+					JSON.stringify({
+						id : info.id,
+						total_quantity:info.total_quantity,
+						title:info.title,
+						description:info.description
+					})
+			}
 		};
 		$http(req).then(
 				function(response){
-					if(response.data.errorList.length == 0)
+					if(response.data.errorList.length == 0){
 						alert("Update was successful!");
+						loadTodos();
+					}
 					else
 						alert("Something's wrong! Please try again later.");	
 				},
@@ -109,10 +122,36 @@ todoPageApp.controller('todoController', function($scope, $http) {
 				}
 		);
 	}
-	
-	$scope.loadDeleteModalData = function(todoID){
-		
-	};
+	$scope.editTodo = function()
+	{
+		var info = $scope.editTodoInfo;
+		var req = {
+			url:'http://localhost:8888/admin/todo/updateTodo',
+			method:'POST',
+			params: {
+				'data':
+					JSON.stringify({
+						id : info.id,
+						total_quantity:info.total_quantity,
+						title:info.title,
+						description:info.description
+					})
+			}
+		};
+		$http(req).then(
+				function(response){
+					if(response.data.errorList.length == 0){
+						alert("Update was successful!");
+						loadTodos();
+					}
+					else
+						alert("Something's wrong! Please try again later.");	
+				},
+				function(response){
+					alert("Can't connect to server.");
+				}
+		);
+	}
 	// Radio Triggers
 	$scope.getAll = function(){
 		$scope.tempTodoList = todoList;
@@ -140,7 +179,9 @@ todoPageApp.controller('todoController', function($scope, $http) {
 	};
 	
 	// Init
+	loadTodos();
 	loadEvents();
+	
 });
 
 /*

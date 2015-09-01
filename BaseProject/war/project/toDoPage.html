@@ -148,7 +148,7 @@
 							</a>
 							<a href='#deleteModal'>
 							<button ng-click="loadDeleteModalData(todo.id)" type='button' class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'> X </button>
-							</a>
+							<a href='#deleteModal'>
 						</td>
 						</div>
 					</tr>
@@ -164,10 +164,10 @@
 		<br>
 		<section1 id="container">	    
 	    <div class="container">
-		   	<div class="row" id="AddToDoContainer">
+		   	<div class="row" >
 		   	
 		   		<!-- ADDED SECTION -->
-    						<div class='container' ng-model="addTodoInfo" ng-bind="deleteTodoId">
+    						<div class='container' ng-model="editTodoInfo" >
 				    
 							        <form class='form-horizontal'>
 				
@@ -195,7 +195,7 @@
 				
 							        </form>     
 							    
-							    </div>;    
+							    </div>
     <!-- END ADD -->		   	
 			</div>
     	</div>

@@ -5,7 +5,7 @@ var app = angular.module('test', []);
 app.controller('button', function($scope, $http) {
 	$scope.addEvent = function(){
 		var req = {
-				url: "http://localhost:8888/admin/todo/addTodo",
+				url: "http://localhost:8888/admin/event/addEvent",
 				method: "POST",
 				params : {
 							'data':
