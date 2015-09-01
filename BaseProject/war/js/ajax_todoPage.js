@@ -10,14 +10,110 @@
 var todoPageApp = angular.module('todoPageApp', []);
 todoPageApp.controller('todoController', function($scope, $http) {
 	todoList =  [
-                  {total_quantity:"1", progress_quantity:"1", title:"Arrange Chairs", description:"A good party comes with good chairs."},
-                  {total_quantity:"1", progress_quantity:"0", title:"Buy a Cake",  description:"Nothing is better than a cake."},
-                  {total_quantity:"13", progress_quantity:"8", title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
-                  {total_quantity:"5", progress_quantity:"2", title:"Buy 5 Cans of Soda",  description:"Party with friends is fun with poping sodas."},
-                  {total_quantity:"1",  progress_quantity:"0", title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
+                  {id:1 ,total_quantity:"1", progress_quantity:"1", title:"Arrange Chairs", description:"A good party comes with good chairs."},
+                  {id:2 ,total_quantity:"1", progress_quantity:"0", title:"Buy a Cake",  description:"Nothing is better than a cake."},
+                  {id:3 ,total_quantity:"13", progress_quantity:"8", title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
+                  {id:4 ,total_quantity:"5", progress_quantity:"2", title:"Buy 5 Cans of Soda",  description:"Party with friends is fun with poping sodas."},
+                  {id:5 ,total_quantity:"1",  progress_quantity:"0", title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
                  ];
+	$scope.allEvents = [];
 	$scope.tempTodoList = todoList; 
 	$scope.searchedString = "";
+	$scope.addTodoInfo = {
+			total_quantity:0,
+			title:"",
+			description:""
+	};
+	$scope.editTodoInfo = {
+			id:-1,
+			total_quantity:0,
+			title:"",
+			description:""
+	};
+	$scope.deleteTodoId = "";
+	
+	function loadEvents(){
+		$http.get("http://localhost:8888/admin/event/getAll")
+	    .success(function(response) {
+	    	$scope.allEvents = response.events;
+	    	
+	    });
+	}
+	// Button Triggers
+	$scope.addTodo = function(){
+		var obj =$scope.addTodoInfo; 
+		alert(obj.title + ""+ obj.description + ""+ obj.description);
+	};
+	$scope.loadEditModalData = function(todoID){
+		var todo = null;
+		for(var i=0;i<todoList.length;i++){
+			if(todoList[i].id == todoID){
+				todo = todoList[i];
+				break;
+			}
+		}
+		if(todo!=null){
+			$scope.editTodoInfo.total_quantity  = todo.total_quantity;
+			$scope.editTodoInfo.title  = todo.title;
+			$scope.editTodoInfo.id  = todo.id;
+			$scope.editTodoInfo.description  =  todo.description;
+		}
+	};
+	$scope.loadDeleteModalData = function(todoID){
+		$scope.deleteTodoId = todoID; 
+	};
+	/// CRUD
+	$scope.deleteTodo = function(todoId){
+		var req = {
+				url:'',
+				method:'POST',
+				params: data =  JSON.stringify({
+					id:info.id
+				})
+			};
+			$http(req).then(
+					function(response){
+						if(response.data.errorList.length == 0)
+							alert("Delete was successful!");
+						else
+							alert("Something's wrong! Please try again later.");	
+					},
+					function(response){
+						alert("Can't connect to server.");
+					}
+			);
+		
+	}
+	$scope.editTodo = function()
+	{
+		var info = $scope.editTodoInfo;
+		var req = {
+			url:'',
+			method:'POST',
+			params: data =  JSON.stringify({
+				id:info.id,
+				total_quantity:info.total_quantity,
+				title:info.title,
+				description:info.description
+			})
+		};
+		$http(req).then(
+				function(response){
+					if(response.data.errorList.length == 0)
+						alert("Update was successful!");
+					else
+						alert("Something's wrong! Please try again later.");	
+				},
+				function(response){
+					alert("Can't connect to server.");
+				}
+		);
+	}
+	
+	$scope.loadDeleteModalData = function(todoID){
+		
+	};
+	// Radio Triggers
 	$scope.getAll = function(){
 		$scope.tempTodoList = todoList;
 		alert("ALL Checked");
@@ -43,11 +139,10 @@ todoPageApp.controller('todoController', function($scope, $http) {
 		alert("Quantity Checked");
 	};
 	
+	// Init
+	loadEvents();
 });
-todoPageApp.controller('modalController', function($scope, $http) {
-	
-	
-});
+
 /*
 var array0fObj_todoList = [];
 
