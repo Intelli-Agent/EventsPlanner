@@ -37,6 +37,8 @@ public class UserService {
         model.setBirthday(user.getBirthday());
         model.setEmail(user.getEmail());
         model.setName(user.getName());
+        model.setUsername(user.getUsername());
+        model.setPassword(user.getPassword());
         return userModelDao.addUserModel(model);
         //return true;
         
@@ -68,6 +70,8 @@ public class UserService {
         model.setBirthday(user.getBirthday());
         model.setEmail(user.getEmail());
         model.setName(user.getName());
+        model.setUsername(user.getUsername());
+        model.setPassword(user.getPassword());
         Key key = Datastore.createKey(UserModel.class, user.getName());
         model.setKey(key);
         return userModelDao.updateUserModel(model);
@@ -89,6 +93,8 @@ public class UserService {
         user.setImgSrc(model.getImgSrc());
         user.setKey(model.getKey());
         user.setName(model.getName());
+        user.setUsername(model.getUsername());
+        user.setPassword(model.getPassword());
         return user;
     }
 }

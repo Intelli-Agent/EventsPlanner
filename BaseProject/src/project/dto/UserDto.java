@@ -25,6 +25,14 @@ public class UserDto {
      */
     private String imgSrc;
     /**
+     * User's username
+     */
+    private String username;
+    /**
+     * User's password
+     */
+    private String password;
+    /**
      * User's name
      */
     private String name;
@@ -129,7 +137,32 @@ public class UserDto {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
 
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
     @Attribute(primaryKey = true)
     private Key key;
     
@@ -217,6 +250,8 @@ public class UserDto {
     {
         JSONObject json = new JSONObject();
             json.put("key", this.getKey());
+            json.put("username", this.getUsername());
+            json.put("password", this.getPassword());
             json.put("name", this.getName());
             json.put("age", this.getAge());
             json.put("address", this.getAddress());
