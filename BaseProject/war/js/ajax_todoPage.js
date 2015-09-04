@@ -19,19 +19,12 @@ todoPageApp.controller('todoController', function($scope, $http) {
 	$scope.allEvents = [];
 	$scope.tempTodoList = todoList; 
 	$scope.searchedString = "";
-	$scope.addTodoInfo = {
-			total_quantity:0,
-			title:"",
-			description:""
-	};
-	$scope.editTodoInfo = {
+	$scope.todoInfo = {
 			id:-1,
 			total_quantity:0,
 			title:"",
 			description:""
 	};
-	$scope.deleteTodoId = "";
-	
 	function loadEvents(){
 		$http.get("http://localhost:8888/admin/event/getAll")
 	    .success(function(response) {
@@ -47,42 +40,45 @@ todoPageApp.controller('todoController', function($scope, $http) {
 		
 	};
 	// Button Triggers
-	$scope.addTodo = function(){
-		var obj =$scope.addTodoInfo; 
-		alert(obj.title + ""+ obj.description + ""+ obj.description);
-	};
-	$scope.loadDeleteModalData = function(todoID){
-		$scope.deleteTodoId = todoID;
-	};
-	$scope.loadEditModalData = function(todoID){
-		var todo = null;
-		for(var i=0;i<todoList.length;i++){
-			if(todoList[i].id == todoID){
-				todo = todoList[i];
-				break;
-			}
-		}
-		if(todo!=null){
-			$scope.editTodoInfo.total_quantity  = todo.total_quantity;
-			$scope.editTodoInfo.title  = todo.title;
-			$scope.editTodoInfo.id  = todo.id;
-			$scope.editTodoInfo.description  =  todo.description;
-		}
+	$scope.loadModalData = function(todoID){
+		$scope.todoInfo = getTodoById(todoID);
+		
 	};
 	
+	
+	function getTodoById(todoID){
+		var result = null;
+		for(var i=0;i<todoList.length;i++)
+			if(todoList[i].id === todoID){
+				result = todoList[i];
+				break;
+			} 
+		return result;
+	};
 	/// CRUD
 	$scope.deleteTodo = function(todoId){
+		var todo = $scope.todoInfo;
 		var req = {
-				url:'',
+				url:'http://localhost:8888/admin/todo/removeTodo',
 				method:'POST',
-				params: data =  JSON.stringify({
-					id:$scope.deleteTodoId
-				})
+				params: {
+					'data':
+						JSON.stringify({
+							id : todo.id,
+							total_quantity:todo.total_quantity,
+							title:todo.title,
+							description:todo.description
+						})
+				}
 			};
+		
 			$http(req).then(
 					function(response){
-						if(response.data.errorList.length == 0)
+						if(response.data.errorList.length == 0){
 							alert("Delete was successful!");
+							loadTodos();
+							$scope.todoInfo = null;
+						}
 						else
 							alert("Something's wrong! Please try again later.");	
 					},
@@ -94,9 +90,9 @@ todoPageApp.controller('todoController', function($scope, $http) {
 	}
 	$scope.addTodo = function()
 	{
-		var info = $scope.editTodoInfo;
+		var info = $scope.todoInfo;
 		var req = {
-			url:'http://localhost:8888/admin/todo/updateTodo',
+			url:'http://localhost:8888/admin/todo/AddTodo',
 			method:'POST',
 			params: {
 				'data':
@@ -113,6 +109,7 @@ todoPageApp.controller('todoController', function($scope, $http) {
 					if(response.data.errorList.length == 0){
 						alert("Update was successful!");
 						loadTodos();
+						$scope.todoInfo = null;
 					}
 					else
 						alert("Something's wrong! Please try again later.");	
@@ -124,7 +121,7 @@ todoPageApp.controller('todoController', function($scope, $http) {
 	}
 	$scope.editTodo = function()
 	{
-		var info = $scope.editTodoInfo;
+		var info = $scope.todoInfo;
 		var req = {
 			url:'http://localhost:8888/admin/todo/updateTodo',
 			method:'POST',
@@ -143,6 +140,7 @@ todoPageApp.controller('todoController', function($scope, $http) {
 					if(response.data.errorList.length == 0){
 						alert("Update was successful!");
 						loadTodos();
+						$scope.todoInfo = null;
 					}
 					else
 						alert("Something's wrong! Please try again later.");	

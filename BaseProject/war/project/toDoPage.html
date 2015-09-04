@@ -105,7 +105,7 @@
 		    		<td align="right">
 		    			<!-- <a href='/plusTodo'> -->
 		    			<a href="#addModal">
-		    				<button data-toggle="" type='submit' class='btn btn-primary' style='background:#F05F40;color:white;'>  + Add Todo  </button>
+		    				<button ng-click="loadAddModalData(todo.id)" type='submit' class='btn btn-primary' style='background:#F05F40;color:white;'>  + Add Todo  </button>
 		    			</a>
 		    		</td>
 		    	</tr>
@@ -144,10 +144,10 @@
 							</td>
 					    <td>
 			   				<a href='#editModal'>
-							<button ng-click="loadEditModalData(todo.id)" type='button' class='btn btn-primary' style='background:#6f6f6f;color:white;width:60px;' >Edit</button>
+							<button ng-click="loadModalData(todo.id)" type='button' class='btn btn-primary' style='background:#6f6f6f;color:white;width:60px;' >Edit</button>
 							</a>
 							<a href='#deleteModal'>
-							<button ng-click="loadDeleteModalData(todo.id)" type='button' class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'> X </button>
+							<button ng-click="loadModalData(todo.id)" type='button' class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'> X </button>
 							<a href='#deleteModal'>
 						</td>
 						</div>
@@ -174,22 +174,22 @@
 							            <div class='row col-xs-6' style='margin-left:10px;'>
 							               <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
-							                  <input ng-model="editTodoInfo.total_quantity" id="todoQuantity" type="text" value="1" class="form-control" min="1">
+							                  <input ng-model="todoInfo.total_quantity" id="todoQuantity" type="text" value="1" class="form-control" min="1">
 							                  
 							                </div>
 							                <br>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
-							                  <input ng-model="editTodoInfo.title" id="todoTitle" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
+							                  <input ng-model="todoInfo.title" id="todoTitle" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
 							                </div>
 							                <br>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
-							                  <textarea ng-model="editTodoInfo.description" id="todoDescription" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
+							                  <textarea ng-model="todoInfo.description" id="todoDescription" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
 							                </div>
 							                <br>
 							                <div class='input-group' style='margin-top:10px;'>
-							                    <input ng-click="editTodo()" id ="submitButton" type='submit' value='Save changes' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
+							                	<input ng-click="editTodo()" id ="submitButton" type='submit' value='Save changes' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
 							                </div>
 							            </div>
 				
@@ -235,17 +235,17 @@
 							            <div class='row col-xs-6' style='margin-left:10px;'>
 							               <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
-							                  <input id="quantity" type="number" value="1" class="form-control" min="1">
+							                  <input ng-model="todoInfo.total_quantity" id="quantity" type="number" value="1" class="form-control" min="1">
 							                </div>
 							                <br>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
-							                  <input id="title" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
+							                  <input  ng-model="todoInfo.title" id="title" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
 							                </div>
 							                <br>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
-							                  <textarea id= "description" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
+							                  <textarea ng-model="todoInfo.description" id= "description" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
 							                </div>
 							                <br>
 							                <div class='input-group'>
@@ -260,7 +260,7 @@
 							                </div>
 							                <br>
 							                <div class='input-group' style='margin-top:10px;'>
-							                    <input id ="submitButton" type='submit' value='Add' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
+							                    <input ng-click="addTodo()" id ="submitButton" type='submit' value='Add' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
 							                </div>
 							            </div>
 				
