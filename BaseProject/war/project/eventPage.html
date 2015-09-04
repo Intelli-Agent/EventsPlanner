@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="eventPage">
 
 <head>
 
@@ -37,7 +37,7 @@
 
 </head>
 
-<body id="page-top" bgcolor="#B2C6E8">
+<body id="page-top" bgcolor="#B2C6E8" ng-controller="eventController">
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -75,7 +75,7 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <div ng-app="eventPage" ng-controller="eventController">
+    <div  >
     <section id="container" class="bg-dark" style="align-content:center; background: url(img/img_eventPage/img_party.jpg) no-repeat; background-size:cover;">		
 			      <br><br><br><br>
 			      <span style="color: white; font: bold 39px/60px Helvetica, Sans-Serif; letter-spacing: -1px;  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7);padding: 10px;">
@@ -107,8 +107,9 @@
 			            </form>
 		    		</td>
 		    		<td align="right">
-		    		
-		    			<input   ng-click="addTodoToThisEvent()" type='submit' value='+ Add Pre-Made Todo to the List' class='btn btn-primary' style='background:#F05F40;color:white;'>
+		    			<a href="#addTodo">
+		    			<input type='submit' value='+ Add Pre-Made Todo to the List' class='btn btn-primary' style='background:#F05F40;color:white;'>
+		    			</a>
 		    		</td>
 		    	</tr>
 		    </table>
@@ -173,6 +174,26 @@
             </div>
         </div>
     </section>
+    
+<div id="addTodo" class="modalDialog" ng-model="deleteTodoId">
+	<div>
+		<a href="#close" title="Close" class="close">X</a>
+		<div class="container .table-responsive">
+			<table class=".table-striped">
+				<tr>
+					<th>Title</th>
+					<th>Description</th>
+					<th >Action</th>
+				</tr>
+				<tr ng-repeat="todo in allTodos"> 
+					<td>{{todo.title}}</td>
+					<td>{{todo.description}}</td>
+					<td><button ng-click="addTodoToThisEvent(todo.id)" class="btn btn-primary"> Add</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
     
 </body>
 <footer>

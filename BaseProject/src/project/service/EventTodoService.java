@@ -30,7 +30,7 @@ public class EventTodoService {
         model.setTodoTitle(todo.getTitle());
         model.setTodoDescription(todo.getDescription());
         model.setTodoTotal_quantity(todo.getTotal_quantity());
-        Key key = Datastore.createKey(EventTodoModel.class, model.getEventTitle() + model.getEventTitle());
+        Key key = Datastore.createKey(EventTodoModel.class, model.getEventTitle() + model.getTodoTitle());
         model.setKey(key);
         return dao.addEventTodo(model);
     }

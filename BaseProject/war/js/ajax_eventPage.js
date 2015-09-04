@@ -14,7 +14,7 @@ app.controller('eventController', function($scope, $http) {
 			eventTitle: "TEst Title",
 			eventDescription: "Test Description"
 			};
-	$scope.todoList =[
+	todoList =[
                       {total_quantity:1, finished_quantity:1, title:"Arrange Chairs", description:"A good party comes with good chairs."},
                       {total_quantity:1, finished_quantity:0, title:"Buy a Cake",  description:"Nothing is better than a cake."},
                       {total_quantity:13, finished_quantity:8, title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
@@ -22,6 +22,8 @@ app.controller('eventController', function($scope, $http) {
                       {total_quantity:1,  finished_quantity:0, title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
                      ];
 	$scope.tempTodoList = $scope.todoList; 
+	$scope.allTodos = [];	
+	
 	
 	function showProgress() {
 		var progress = getProgess();
@@ -42,6 +44,12 @@ app.controller('eventController', function($scope, $http) {
 	        results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	function loadTodos(){
+		$http.get("http://localhost:8888/admin/todo/getAllTodos")
+	    .success(function(response) {
+	    	$scope.allTodos = response.todos;
+	    });
+	};
 	
 	function loadEvent(){
 		var eventId = getParameterByName('event');
@@ -86,10 +94,34 @@ app.controller('eventController', function($scope, $http) {
 		
 	}
 	///// ADD
-	$scope.addTodoToThisEvent = function (){
-		alert("Load TODO modal for adding TODOS to this event");
-		
+	$scope.addTodoToThisEvent = function (todoID){
+		var req = {
+			url: "http://localhost:8888/admin/eventTodo/addEventTodo",
+			method:"POST",
+			params:{
+				'data':
+					JSON.stringify({
+							'eventID':$scope.event.eventID,
+							'todoID':todoID,	
+					})
+				}
+				
+		};
+		$http(req).then(
+				function(response){
+					if(response.data.errorList.length == 0){
+						alert("Update was successful!");
+						loadEvent();
+					}
+					else
+						alert("Something's wrong! Please try again later.");	
+				},
+				function(response){
+					alert("Can't connect to server.");
+				}
+		);
 	}
+	loadTodos();
 	loadEvent();
 });
 
