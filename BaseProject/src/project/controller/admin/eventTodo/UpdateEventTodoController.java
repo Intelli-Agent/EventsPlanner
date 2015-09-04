@@ -5,6 +5,7 @@ import org.slim3.controller.Navigation;
 import org.slim3.repackaged.org.json.JSONObject;
 
 import project.dto.EventTodoDto;
+import project.dto.TodoDto;
 import project.model.EventTodoModel;
 import project.service.EventTodoService;
 
@@ -22,7 +23,15 @@ public class UpdateEventTodoController extends Controller {
             eventTodo.setEventID(json.getInt("eventID"));
             eventTodo.setEventTitle(json.getString("eventTitle"));
             eventTodo.setTodoId(json.getString("todoID"));
-         //   eventTodo.setTodoStatus(json.getBoolean("todoStatus"));
+            // Todo Info
+            TodoDto todo = new TodoDto();
+            todo.setId(json.getString("todoID"));
+            todo.setFinished_quantity(json.getInt("finished_quantity"));
+            todo.setTitle(json.getString("title"));
+            todo.setDescription(json.getString("description"));
+            todo.setTotal_quantity(json.getInt("total_quantity"));
+            //
+            eventTodo.setTodo(todo);
             service.updateEventTodo(eventTodo);
         }catch(Exception e){
             e.printStackTrace();

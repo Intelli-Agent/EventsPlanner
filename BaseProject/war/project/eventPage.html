@@ -130,8 +130,23 @@
 					<!-- Headers -->
 					<tr   ng-repeat="x in tempTodoList" ng-if="x.title.indexOf(searchedString) > -1">
 							<input type="hidden" value="{{x.id}}" name="todoId">
-							<td><input ng-if="x.total_quantity > 1" type='number' value={{x.finished_quantity}} style='width:40px;' min='0' max={{x.total_quantity}}>
-								<input ng-if="x.total_quantity == 1 "ng-checked="x.total_quantity == x.finished_quantity" type='checkbox'  >
+							<td>
+								<input ng-disabled="x.total_quantity == x.finished_quantity" 
+									   ng-if="x.total_quantity > 1"
+									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
+									   ng-click="updateTodo(tempTodoList.indexOf(x))" 
+									   type='number' 
+									   value={{x.finished_quantity}} 
+									   style='width:40px;' 
+									   min='0' 
+									   max={{x.total_quantity}}>
+									   
+								<input ng-if="x.total_quantity == 1"
+									   ng-disabled="x.total_quantity == x.finished_quantity" 
+									   ng-click="updateTodo(tempTodoList.indexOf(x))"
+									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
+									   ng-checked="x.total_quantity == x.finished_quantity" 
+									   type='checkbox'  >
 								
 							</td>
 							<td><h4>{{x.title}}</h4></td>
@@ -145,8 +160,7 @@
 						 		</select>
 						 	</td>
 						 	<td>
-						 		<input type='submit' ng-click="editTodoAt(tempTodoList.indexOf(x))" value='Edit' class='btn btn-primary' style='background:#6f6f6f;color:white;width:60px;'>
-						 		<input type='submit' ng-click="removeTodoAt(tempTodoList.indexOf(x))" value="X" class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'>
+						 		<input type='submit' ng-click="loadModalData(tempTodoList.indexOf(x))" value="X" class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'>
 						 	</td>
 					</tr>
 		   		</table>
@@ -194,7 +208,6 @@
 		</div>
 	</div>
 </div>
-    
 </body>
 <footer>
 	<!-- Angular -->

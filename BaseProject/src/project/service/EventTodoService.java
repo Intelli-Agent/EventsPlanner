@@ -43,10 +43,12 @@ public class EventTodoService {
         model.setEventID(et.getEventID());
         model.setTodoId(et.getTodoId());
         model.setEventTitle((new EventModelDao()).getEvent(model.getEventID()).getEventName());
-        TodoModel todo = (new TodoDao()).getTodoById(model.getTodoId());
+        //TodoModel 
+        TodoDto todo = et.getTodo();//(new TodoDao()).getTodoById(model.getTodoId());
         model.setTodoTitle(todo.getTitle());
         model.setTodoDescription(todo.getDescription());
         model.setTodoTotal_quantity(todo.getTotal_quantity());
+        model.setTodoFinished_quantity(todo.getFinished_quantity());
         Key key = Datastore.createKey(EventTodoModel.class, et.getEventTitle() + et.getTodo().getTitle());
         model.setKey(key);
         return dao.updateEventTodo(model);

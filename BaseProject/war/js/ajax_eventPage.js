@@ -23,7 +23,7 @@ app.controller('eventController', function($scope, $http) {
                      ];
 	$scope.tempTodoList = $scope.todoList; 
 	$scope.allTodos = [];	
-	
+	$scope.currentTodo = null;
 	
 	function showProgress() {
 		var progress = getProgess();
@@ -74,7 +74,8 @@ app.controller('eventController', function($scope, $http) {
 		
 		$http(todoInfoAJAX).
 		  then(function(response) {
-			    $scope.tempTodoList = response.data.todoList;
+			    todoList = response.data.todoList;
+			    $scope.tempTodoList = todoList;
 			    showProgress();
 			  },
 			  function(response) {
@@ -84,15 +85,93 @@ app.controller('eventController', function($scope, $http) {
 		
 		
 	}
+	
+	function getTodoByID (todoID){
+		var todo = null;
+		for(var i; i < todoList.length ; i++)
+				if(todoList[i].id == todoID){
+					todo = todoList[i];
+					break;
+				}
+		return todo;
+	};
+	$scope.loadModalData = function(position){
+		$scope.currentTodo = todoList[position];
+	}
 	//// DELETE
-	$scope.removeTodoAt = function (position){
-		$scope.todoList.splice(position,1);
-	}
+	$scope.removeTodo = function (position){
+		var todo = $scope.tempTodoList[position];
+		if(todo.finished_quantity == true)
+			todo.finished_quantity = 1;
+		var req = {
+				url: "http://localhost:8888/admin/eventTodo/removeeEventTodo",
+				method:"POST",
+				params:{
+					'data':
+						JSON.stringify({
+								'eventID':$scope.event.eventID,
+								'eventTitle': $scope.event.eventTitle,
+								'todoID':todo.id,
+								'finished_quantity':todo.finished_quantity,
+								'title':todo.title,
+								'description':todo.description,
+								'total_quantity':todo.total_quantity
+						})
+					}
+					
+			};
+			$http(req).then(
+					function(response){
+						if(response.data.errorList.length == 0){
+							loadTodos();
+							loadEvent();
+							alert("Update was successful!");
+						}
+						else
+							alert("Something's wrong! Please try again later.");	
+					},
+					function(response){
+						alert("Can't connect to server.");
+					}
+			);
+	};
 	///// EDIT
-	$scope.editTodoAt = function (position){
-		$("#myModal").show();
-		
-	}
+	$scope.updateTodo = function (position){
+		var todo = $scope.tempTodoList[position];
+		if(todo.finished_quantity == true)
+			todo.finished_quantity = 1;
+		var req = {
+				url: "http://localhost:8888/admin/eventTodo/updateEventTodo",
+				method:"POST",
+				params:{
+					'data':
+						JSON.stringify({
+								'eventID':$scope.event.eventID,
+								'eventTitle': $scope.event.eventTitle,
+								'todoID':todo.id,
+								'finished_quantity':todo.finished_quantity,
+								'title':todo.title,
+								'description':todo.description,
+								'total_quantity':todo.total_quantity
+						})
+					}
+					
+			};
+			$http(req).then(
+					function(response){
+						if(response.data.errorList.length == 0){
+							loadTodos();
+							loadEvent();
+							alert("Update was successful!");
+						}
+						else
+							alert("Something's wrong! Please try again later.");	
+					},
+					function(response){
+						alert("Can't connect to server.");
+					}
+			);
+	};
 	///// ADD
 	$scope.addTodoToThisEvent = function (todoID){
 		var req = {
@@ -110,8 +189,9 @@ app.controller('eventController', function($scope, $http) {
 		$http(req).then(
 				function(response){
 					if(response.data.errorList.length == 0){
-						alert("Update was successful!");
+						loadTodos();
 						loadEvent();
+						alert("Adding of Todo was successful!");
 					}
 					else
 						alert("Something's wrong! Please try again later.");	
