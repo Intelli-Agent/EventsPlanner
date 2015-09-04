@@ -35,7 +35,7 @@ public class EventTodoService {
         return dao.addEventTodo(model);
     }
     public boolean removeEventTodo(EventTodoDto et){
-        Key key = Datastore.createKey(EventTodoModel.class, et.getEventTitle());
+        Key key = Datastore.createKey(EventTodoModel.class, et.getEventTitle() + et.getTodo().getTitle());
         return dao.removeEventTodo(key);
     }
     public boolean updateEventTodo(EventTodoDto et){

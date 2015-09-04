@@ -5,6 +5,7 @@ import org.slim3.controller.Navigation;
 import org.slim3.repackaged.org.json.JSONObject;
 
 import project.dto.EventTodoDto;
+import project.dto.TodoDto;
 import project.model.EventTodoModel;
 import project.service.EventTodoService;
 
@@ -22,6 +23,9 @@ public class RemoveEventTodoController extends Controller {
             eventTodo.setEventID(json.getInt("eventID"));
             eventTodo.setEventTitle(json.getString("eventTitle"));
             eventTodo.setTodoId(json.getString("todoID"));
+            TodoDto todo = new TodoDto();
+            todo.setTitle(json.getString("title"));
+            eventTodo.setTodo(todo);
           //  eventTodo.setTodoStatus(json.getBoolean("todoStatus"));
             service.removeEventTodo(eventTodo);
         }catch(Exception e){

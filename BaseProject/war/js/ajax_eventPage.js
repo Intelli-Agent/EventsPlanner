@@ -101,10 +101,8 @@ app.controller('eventController', function($scope, $http) {
 	//// DELETE
 	$scope.removeTodo = function (position){
 		var todo = $scope.tempTodoList[position];
-		if(todo.finished_quantity == true)
-			todo.finished_quantity = 1;
 		var req = {
-				url: "http://localhost:8888/admin/eventTodo/removeeEventTodo",
+				url: "http://localhost:8888/admin/eventTodo/removeEventTodo",
 				method:"POST",
 				params:{
 					'data':
@@ -112,10 +110,7 @@ app.controller('eventController', function($scope, $http) {
 								'eventID':$scope.event.eventID,
 								'eventTitle': $scope.event.eventTitle,
 								'todoID':todo.id,
-								'finished_quantity':todo.finished_quantity,
-								'title':todo.title,
-								'description':todo.description,
-								'total_quantity':todo.total_quantity
+								'title':todo.title
 						})
 					}
 					
@@ -125,7 +120,7 @@ app.controller('eventController', function($scope, $http) {
 						if(response.data.errorList.length == 0){
 							loadTodos();
 							loadEvent();
-							alert("Update was successful!");
+							alert("Todo Removal was successful!");
 						}
 						else
 							alert("Something's wrong! Please try again later.");	
@@ -201,8 +196,8 @@ app.controller('eventController', function($scope, $http) {
 				}
 		);
 	}
-	loadTodos();
 	loadEvent();
+	loadTodos();
 });
 
 $(document).ready(function() {
