@@ -78,12 +78,16 @@ todoPageApp.controller('todoController', function($scope, $http) {
 							alert("Delete was successful!");
 							loadTodos();
 							$scope.todoInfo = null;
+							$("#deleteModal").hide();
 						}
-						else
+						else{
 							alert("Something's wrong! Please try again later.");	
+							$("#deleteModal").hide();
+						}
 					},
 					function(response){
 						alert("Can't connect to server.");
+						$("#deleteModal").hide();
 					}
 			);
 		
@@ -110,14 +114,22 @@ todoPageApp.controller('todoController', function($scope, $http) {
 						alert("Update was successful!");
 						loadTodos();
 						$scope.todoInfo = null;
+						$("#addModal").hide();
 					}
-					else
+					else{
 						alert("Something's wrong! Please try again later.");	
+						$("#addModal").hide();
+					}
 				},
 				function(response){
 					alert("Can't connect to server.");
-				}
+					$("#addModal").hide();
+					
+				}			
+				
 		);
+		
+		
 	}
 	$scope.editTodo = function()
 	{
@@ -141,12 +153,16 @@ todoPageApp.controller('todoController', function($scope, $http) {
 						alert("Update was successful!");
 						loadTodos();
 						$scope.todoInfo = null;
+						$("#editModal").hide();
 					}
-					else
+					else{
 						alert("Something's wrong! Please try again later.");	
+						$("#editModal").hide();
+					}
 				},
 				function(response){
 					alert("Can't connect to server.");
+					$("#editModal").hide();
 				}
 		);
 	}
