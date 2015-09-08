@@ -5,8 +5,8 @@ var app = angular.module('index', []);
 app.controller('generateSomeEvents', function($scope, $http) {
 	$http.get("http://localhost:8888/admin/event/getAll")
 	    .success(function(response) {
-	    	//$scope.eventList = response.events;
-	    	//$scope.eventList.splice(4);
+	    	$scope.eventList = response.events;
+	    	$scope.eventList.splice(4);
 	    });
 });
 

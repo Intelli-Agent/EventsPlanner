@@ -1,6 +1,6 @@
 package project.meta;
 
-//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2015-08-18 06:51:51")
+//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2015-09-08 20:48:54")
 /** */
 public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.model.TodoModel> {
 
@@ -11,7 +11,7 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
     public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer> finished_quantity = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer>(this, "finished_quantity", "finished_quantity", int.class);
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer> id = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer>(this, "id", "id", int.class);
+    public final org.slim3.datastore.StringAttributeMeta<project.model.TodoModel> id = new org.slim3.datastore.StringAttributeMeta<project.model.TodoModel>(this, "id", "id");
 
     /** */
     public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, com.google.appengine.api.datastore.Key> key = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, com.google.appengine.api.datastore.Key>(this, "__key__", "key", com.google.appengine.api.datastore.Key.class);
@@ -44,7 +44,7 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
         project.model.TodoModel model = new project.model.TodoModel();
         model.setDescription((java.lang.String) entity.getProperty("description"));
         model.setFinished_quantity(longToPrimitiveInt((java.lang.Long) entity.getProperty("finished_quantity")));
-        model.setId(longToPrimitiveInt((java.lang.Long) entity.getProperty("id")));
+        model.setId((java.lang.String) entity.getProperty("id"));
         model.setKey(entity.getKey());
         model.setTitle((java.lang.String) entity.getProperty("title"));
         model.setTotal_quantity(longToPrimitiveInt((java.lang.Long) entity.getProperty("total_quantity")));
@@ -135,8 +135,10 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
         }
         writer.setNextPropertyName("finished_quantity");
         encoder0.encode(writer, m.getFinished_quantity());
-        writer.setNextPropertyName("id");
-        encoder0.encode(writer, m.getId());
+        if(m.getId() != null){
+            writer.setNextPropertyName("id");
+            encoder0.encode(writer, m.getId());
+        }
         if(m.getKey() != null){
             writer.setNextPropertyName("key");
             encoder0.encode(writer, m.getKey());

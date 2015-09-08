@@ -74,5 +74,7 @@ app.controller('button', function($scope, $http) {
 	}
 });
 
-
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').focus()
+  });
 

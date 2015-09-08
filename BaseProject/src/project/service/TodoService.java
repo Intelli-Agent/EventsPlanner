@@ -101,7 +101,7 @@ public class TodoService {
      */
     public boolean removeTodo(TodoDto todo)
     {
-        todo.setKey(Datastore.createKey(TodoModel.class, todo.getTitle()));
+        todo.setKey(Datastore.createKey(TodoModel.class, todo.getId()));
         return dao.removeTodo(todo.getKey());
     }
     /**
@@ -114,7 +114,7 @@ public class TodoService {
     public boolean updateTodo(TodoDto todo)
     {
         TodoModel model = new TodoModel();
-        model.setKey(todo.getKey());
+        model.setKey(Datastore.createKey(TodoModel.class, todo.getId()));
         model.setTitle(todo.getTitle());
         model.setTotal_quantity(todo.getTotal_quantity());
         model.setDescription(todo.getDescription());

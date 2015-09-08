@@ -10,29 +10,30 @@
 var todoPageApp = angular.module('todoPageApp', []);
 todoPageApp.controller('todoController', function($scope, $http) {
 	todoList =  [
-                  {id:1 ,total_quantity:"1", progress_quantity:"1", title:"Arrange Chairs", description:"A good party comes with good chairs."},
-                  {id:2 ,total_quantity:"1", progress_quantity:"0", title:"Buy a Cake",  description:"Nothing is better than a cake."},
-                  {id:3 ,total_quantity:"13", progress_quantity:"8", title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
-                  {id:4 ,total_quantity:"5", progress_quantity:"2", title:"Buy 5 Cans of Soda",  description:"Party with friends is fun with poping sodas."},
-                  {id:5 ,total_quantity:"1",  progress_quantity:"0", title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
+                  
                  ];
 	$scope.allEvents = [];
 	$scope.tempTodoList = todoList; 
 	$scope.searchedString = "";
-	$scope.todoInfo = {
-			id:-1,
-			total_quantity:0,
-			title:"",
-			description:""
-	};
+	var add_selected_event = null;
+	$scope.todoInfo = null;
+	
 	function loadEvents(){
 		$http.get("http://localhost:8888/admin/event/getAll")
 	    .success(function(response) {
 	    	$scope.allEvents = response.events;
 	    });
 	}
+	function initializeTodoInfo(){
+		$scope.todoInfo = {
+				id:"",
+				total_quantity:1,
+				title:"",
+				description:""
+		};
+	}
 	function loadTodos(){
-		$http.get("http://localhost:8888/admin/todo/getAllTodos")
+		$http.get("/admin/todo/getAllTodos")
 	    .success(function(response) {
 	    	todoList = response.todos;
 			$scope.tempTodoList = todoList;
@@ -75,19 +76,15 @@ todoPageApp.controller('todoController', function($scope, $http) {
 			$http(req).then(
 					function(response){
 						if(response.data.errorList.length == 0){
-							alert("Delete was successful!");
 							loadTodos();
-							$scope.todoInfo = null;
-							$("#deleteModal").hide();
+							initializeTodoInfo();
+							$('#deleteModaNew').modal('toggle');
 						}
-						else{
+						else
 							alert("Something's wrong! Please try again later.");	
-							$("#deleteModal").hide();
-						}
 					},
 					function(response){
 						alert("Can't connect to server.");
-						$("#deleteModal").hide();
 					}
 			);
 		
@@ -111,25 +108,48 @@ todoPageApp.controller('todoController', function($scope, $http) {
 		$http(req).then(
 				function(response){
 					if(response.data.errorList.length == 0){
-						alert("Update was successful!");
+						initializeTodoInfo();
+						$('#addModaNew').modal('toggle');
 						loadTodos();
-						$scope.todoInfo = null;
-						$("#addModal").hide();
+						
 					}
-					else{
+					else
 						alert("Something's wrong! Please try again later.");	
-						$("#addModal").hide();
-					}
 				},
 				function(response){
 					alert("Can't connect to server.");
-					$("#addModal").hide();
-					
-				}			
-				
+				}
 		);
-		
-		
+		/*
+		if(add_selected_event != null){
+			req = {
+					url: "http://localhost:8888/admin/eventTodo/addEventTodo",
+					method:"POST",
+					params:{
+						'data':
+							JSON.stringify({
+									'eventID':add_selected_event,
+									'todoID': "info.id",	
+							})
+						}
+						
+				};
+				$http(req).then(
+						function(response){
+							if(response.data.errorList.length == 0){
+								loadTodos();
+								alert("Adding of Todo was successful!");
+							}
+							else
+								alert("Something's wrong! Please try again later.");	
+						},
+						function(response){
+							alert("Can't connect to server.");
+						}
+				);
+			add_selected_event = null;
+			
+		}*/
 	}
 	$scope.editTodo = function()
 	{
@@ -150,26 +170,23 @@ todoPageApp.controller('todoController', function($scope, $http) {
 		$http(req).then(
 				function(response){
 					if(response.data.errorList.length == 0){
-						alert("Update was successful!");
 						loadTodos();
-						$scope.todoInfo = null;
-						$("#editModal").hide();
+						initializeTodoInfo();
+						$('#editModaNew').modal('toggle');
+						alert("Update was successful!");
+						
 					}
-					else{
+					else
 						alert("Something's wrong! Please try again later.");	
-						$("#editModal").hide();
-					}
 				},
 				function(response){
 					alert("Can't connect to server.");
-					$("#editModal").hide();
 				}
 		);
 	}
 	// Radio Triggers
 	$scope.getAll = function(){
 		$scope.tempTodoList = todoList;
-		alert("ALL Checked");
 	};
 	$scope.getAction = function(){
 		var todos = [];
@@ -179,7 +196,6 @@ todoPageApp.controller('todoController', function($scope, $http) {
 					todos.push($scope.tempTodoList[i]);
 			}
 		$scope.tempTodoList = todos;
-		alert("Action Checked");
 	};
 	$scope.getQuantity = function(){
 		var todos = [];
@@ -189,10 +205,15 @@ todoPageApp.controller('todoController', function($scope, $http) {
 					todos.push(todoList[i]);
 			}
 		$scope.tempTodoList = todos;
-		alert("Quantity Checked");
 	};
 	
+	$scope.checkSelected = function(id){
+		add_selected_event = id;
+	};
+	
+	
 	// Init
+	initializeTodoInfo();
 	loadTodos();
 	loadEvents();
 	

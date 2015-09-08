@@ -9,18 +9,8 @@
 
 var app = angular.module('eventPage', []);
 app.controller('eventController', function($scope, $http) {
-	$scope.event = {
-			eventId : 1,
-			eventTitle: "TEst Title",
-			eventDescription: "Test Description"
-			};
-	todoList =[
-                      {total_quantity:1, finished_quantity:1, title:"Arrange Chairs", description:"A good party comes with good chairs."},
-                      {total_quantity:1, finished_quantity:0, title:"Buy a Cake",  description:"Nothing is better than a cake."},
-                      {total_quantity:13, finished_quantity:8, title:"Buy 13 Kinds of Round Fruits",  description:"To prosper your new year's life."},
-                      {total_quantity:5, finished_quantity:2, title:"Buy 5 Cans of Soda",  description:"Party with friends is fun with poping sodas."},
-                      {total_quantity:1,  finished_quantity:0, title:"Setup Wifi Network",  description:"Everybody loves to share their moments online."}
-                     ];
+	$scope.event = {};
+	var todoList =[];
 	$scope.tempTodoList = $scope.todoList; 
 	$scope.allTodos = [];	
 	$scope.currentTodo = null;
@@ -95,12 +85,15 @@ app.controller('eventController', function($scope, $http) {
 				}
 		return todo;
 	};
+	
+	//Button triggers
 	$scope.loadModalData = function(position){
 		$scope.currentTodo = todoList[position];
 	}
+	
 	//// DELETE
-	$scope.removeTodo = function (position){
-		var todo = $scope.tempTodoList[position];
+	$scope.removeTodo = function(){
+		var todo = $scope.currentTodo;
 		var req = {
 				url: "http://localhost:8888/admin/eventTodo/removeEventTodo",
 				method:"POST",
@@ -121,6 +114,7 @@ app.controller('eventController', function($scope, $http) {
 							loadTodos();
 							loadEvent();
 							alert("Todo Removal was successful!");
+							$('#deleteModaNew').modal('toggle');
 						}
 						else
 							alert("Something's wrong! Please try again later.");	

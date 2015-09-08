@@ -1,19 +1,308 @@
-
-
-
 <!DOCTYPE html>
-<html lang="en" ng-app="test">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="js/angular.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="js/test.js"></script>
-</head>
-<body ng-controller="button">
-	<button ng-click="addEvent()">Test Me!</button>
+<html lang="en" ng-app="eventPage">
 
+<head>
+
+   <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    
+    <link href="css/eventPage/custom.css" rel="stylesheet">
+    <title>Intelli-Agent's Events Planner | Event Page</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts 
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>-->
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/creative.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body id="page-top" bgcolor="#B2C6E8" ng-controller="eventController">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="/">Events Planner</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/events">Events</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/todos">Todos</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/profile">Profile</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/settings">Setting</a>
+                    </li>                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div  >
+    <section id="container" class="bg-dark" style="align-content:center; background: url(img/img_eventPage/img_party.jpg) no-repeat; background-size:cover;">		
+			      <br><br><br><br>
+			      <span style="color: white; font: bold 39px/60px Helvetica, Sans-Serif; letter-spacing: -1px;  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7);padding: 10px;">
+			     {{event.eventTitle}}
+			      </span>
+			      <br>
+			      <span style="color: white; font: 29px/60px Helvetica, Sans-Serif; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7);padding: 10px;">
+			      	{{event.eventDescription}}
+			      </span>
+	</section>
+	<section id="skills" style="padding:0px">
+		<progress value="0" max="100"></progress><span></span>
+	</section>
+	<section id="container" style="padding:0px">
+	    <div class="container">
+		    <div class="row page-header">
+		    	<a href="/events">
+		    	<button type="button" class="btn btn-info" aria-label="Left Align" >
+			  		<span class="glyphicon glyphicon-hand-left" aria-hidden="true"></span>Back
+				</button>
+				</a>
+		    	<h1>{{event.eventTitle}} Todo List</h1>
+		    </div>
+		    <table style="width:100%">
+		    	<tr>
+		    		<td align="left">
+			            <form action="" class="search-form">
+			                <div class="form-group has-feedback">
+			                    <label for="search" class="sr-only">Search</label>
+			                    <input type="text" ng-init="searchedString=''" ng-model="searchedString" class="form-control" name="search" id="search" placeholder="Search">
+			                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+			                    
+			                </div>
+			            </form>
+		    		</td>
+		    		<td align="right">
+		    			<button ng-click="" type="button" class="btn btn-primary " data-toggle="modal" data-target="#addModaNew">
+							 + Add Pre-Made Todo to the List
+						</button>
+						<!-- 	
+		    			<a href="#addTodo">
+		    			<input type='submit' value='+ Add Pre-Made Todo to the List' class='btn btn-primary' style='background:#F05F40;color:white;'>
+		    			</a>
+		    			 -->
+		    		</td>
+		    	</tr>
+		    </table>
+	    </div>
+	    
+	    <div class="container">
+		   	<div class="row" id="TodoListContainer">
+		   		<table  ng-model="tempTodoList" class='table' align='center' style='width:1200px;'>
+					<tr>
+					<td></td>
+					<td><b>Name</b></td>
+					<td><b>Description</b></td>
+					<td><b>Status</b></td>
+					<td><b>Action</b></td>
+					</tr>
+					<tr ng-if="tempTodoList.length == 0"><td colspan='5' align='center'><br>There are no available todos right now.<br><br></td></tr><tr><td colspan='5'></td></tr>
+					
+					<!-- Headers -->
+					<tr   ng-repeat="x in tempTodoList" ng-if="x.title.indexOf(searchedString) > -1">
+							<input type="hidden" value="{{x.id}}" name="todoId">
+							<td>
+								<input ng-disabled="x.total_quantity == x.finished_quantity" 
+									   ng-if="x.total_quantity > 1"
+									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
+									   ng-click="updateTodo(tempTodoList.indexOf(x))" 
+									   type='number' 
+									   value={{x.finished_quantity}} 
+									   style='width:40px;' 
+									   min='0' 
+									   max={{x.total_quantity}}>
+									   
+								<input ng-if="x.total_quantity == 1"
+									   ng-disabled="x.total_quantity == x.finished_quantity" 
+									   ng-click="updateTodo(tempTodoList.indexOf(x))"
+									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
+									   ng-checked="x.total_quantity == x.finished_quantity" 
+									   type='checkbox'  >
+								
+							</td>
+							<td><h4>{{x.title}}</h4></td>
+							<td><h4>{{x.description}}</h4></td>
+						 	<td>
+						 		<select disabled>
+						 			<option ng-selected="x.finished_quantity ==0">New</option>
+						 			<option ng-selected="x.finished_quantity >0 && x.finished_quantity < x.total_quantity">In Progress</option>
+						 			<option ng-selected="x.finished_quantity == x.total_quantity">Finished</option>
+						 			
+						 		</select>
+						 	</td>
+						 	<td>
+						 		<!--input type='submit' ng-click="removeTodo(tempTodoList.indexOf(x))" value="X" class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'-->
+						 		<button  type="button" ng-click="loadModalData(tempTodoList.indexOf(x))" class='btn btn-danger' style='color:white;' data-toggle="modal" data-target="#deleteModaNew">
+						  	X
+							</button> 
+						 	</td>
+					</tr>
+		   		</table>
+			</div>
+		</div>
+	    
+	</section>
+    </div>
+    <section id="contact" class="bg-dark">
+        <div class="container ">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Let's Get In Touch!</h2>
+                    <hr class="primary">
+                    <p>Want to create a new event and let everybody know about? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                </div>
+                <div class="col-lg-4 col-lg-offset-2 text-center">
+                    <i class="fa fa-phone fa-3x wow bounceIn"></i>
+                    <p>123-456-6789</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+                    <p><a href="mailto:contact@intelli-agent.com">contact@intelli-agent.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+<div id="addTodo" class="modalDialog" ng-model="deleteTodoId">
+	<div>
+		<a href="#close" title="Close" class="close">X</a>
+		<div class="container .table-responsive">
+			<table class=".table-striped">
+				<tr>
+					<th>Title</th>
+					<th>Description</th>
+					<th >Action</th>
+				</tr>
+				<tr ng-repeat="todo in allTodos"> 
+					<td>{{todo.title}}</td>
+					<td>{{todo.description}}</td>
+					<td><button ng-click="addTodoToThisEvent(todo.id)" class="btn btn-primary"> Add</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- MODALS -->
+<!-- ADD MODAL -->
+<div class="modal fade" id="addModaNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Todo</h4>
+      </div>
+      <div class="modal-body center-block">
+		  <div class='container-fluid '>
+			    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' >
+			    <table class="table table-striped table-bordered">
+				<tr>
+					<th>Title</th>
+					<th>Description</th>
+					<th >Action</th>
+				</tr>
+				<tr ng-repeat="todo in allTodos"> 
+					<td>{{todo.title}}</td>
+					<td>{{todo.description}}</td>
+					<td><button ng-click="addTodoToThisEvent(todo.id)" class="btn btn-primary"> Add</button></td>
+				</tr>
+			</table>
+			    </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="addTodo()" type="button" class="btn btn-primary">Add Todo</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ADD MODAL -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModaNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete Todo</h4>
+      </div>
+      <div class="modal-body center-block">
+		  <div class='container-fluid '>
+			    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' >
+			   		<p align="center">Are you sure you want to delete this todo?</p>
+					<center>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					<input ng-click="removeTodo()" type='submit' value='Delete' class='btn btn-danger'>
+					</center>
+					
+				</div>
+		  </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- DELETE MODAL -->
+
+
+<!-- MODALS -->
 </body>
+<footer>
+	<!-- Angular -->
+    <script src="js/angular.min.js"></script>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.js"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+
+	<script src="js/ajax_eventPage.js"></script>
+
+</footer>
 </html>

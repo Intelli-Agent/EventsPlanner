@@ -71,7 +71,7 @@ public class TodoDao{
     {
         boolean ok = false;
         Transaction trans = Datastore.beginTransaction();
-        Key key = Datastore.createKey(TodoModel.class, todo.getTitle());
+        Key key = Datastore.createKey(TodoModel.class, todo.getId());
         todo.setKey(key);
         Datastore.put(todo);
         trans.commit();
