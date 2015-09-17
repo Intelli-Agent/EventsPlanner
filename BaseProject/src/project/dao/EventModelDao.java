@@ -5,14 +5,19 @@ import java.util.List;
 import org.slim3.datastore.DaoBase;
 import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.Key;
 
+import project.meta.EventModelMeta;
 import project.model.EventModel;
 
 public class EventModelDao extends DaoBase<EventModel>{
+    
+    
     Datastore db;
+    Key parentKey = KeyFactory.createKey("EventsPlanner", "Default");
     /**
      * Gets all events that contains String n in its title. <br> <br>
      * Ex.<br>
@@ -49,10 +54,13 @@ public class EventModelDao extends DaoBase<EventModel>{
      *            the sortingOrder of the query
      * @return List of Events.
      */
-    public EventModel getEvent(int id){
+    public EventModel getEvent(long id){
         EventModel model = new EventModel();
         model = Datastore.query(EventModel.class).filter("eventID", Query.FilterOperator.EQUAL, id).asSingle();
         return model;
+        /*EventModelMeta event = new EventModelMeta();
+        return Datastore.query(event, parentKey).filter("eventID", Query.FilterOperator.EQUAL, id).asSingle();
+        */
     }
     public List<EventModel> getAllEvent(String sortOrder)
     {
@@ -65,15 +73,25 @@ public class EventModelDao extends DaoBase<EventModel>{
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean addEvent(EventModel e)
+    public boolean addEvent(EventModel event)
     {
-        boolean ok = false;
-        Transaction trans = Datastore.beginTransaction();
+        boolean ok = true;
+        /*Transaction trans = Datastore.beginTransaction();
         Key key = Datastore.createKey(EventModel.class, e.getEventName());
         e.setKey(key);
         Datastore.put(e);
-        trans.commit();
-        ok = true;
+        trans.commit();*/
+        
+        try {
+            Transaction trans = Datastore.beginTransaction();
+            Key key = Datastore.allocateId(parentKey, "EventModel");
+            event.setKey(key);
+            //event.setEventID(key.getId());
+            Datastore.put(event);
+            trans.commit();
+        } catch (Exception e) {
+            ok = false;
+        }
         return ok;
     }
     /**

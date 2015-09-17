@@ -8,20 +8,19 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 @Model(schemaVersion = 1)
-public class TodoModel implements Serializable {
-    
-    private String id;
+public class Todo implements Serializable {
+    private long id;
     /**
      * @return the id
      */
-    public String getId() {
+    public long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -46,62 +45,45 @@ public class TodoModel implements Serializable {
     /**
      * @return the title
      */
+     
+    private static final long serialVersionUID = 1L;
+
     public String getTitle() {
-        
         return title;
     }
 
-    /**
-     * @param title the title to set
-     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the total_quantity
-     */
     public int getTotal_quantity() {
         return total_quantity;
     }
 
-    /**
-     * @param total_quantity the total_quantity to set
-     */
     public void setTotal_quantity(int total_quantity) {
         this.total_quantity = total_quantity;
     }
 
-    /**
-     * @return the finished_quantity
-     */
     public int getFinished_quantity() {
         return finished_quantity;
     }
 
-    /**
-     * @param finished_quantity the finished_quantity to set
-     */
     public void setFinished_quantity(int finished_quantity) {
         this.finished_quantity = finished_quantity;
     }
-    
-    private static final long serialVersionUID = 1L;
-    
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
     @Attribute(primaryKey = true)
     private Key key;
 
@@ -165,7 +147,7 @@ public class TodoModel implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        TodoModel other = (TodoModel) obj;
+        Todo other = (Todo) obj;
         if (key == null) {
             if (other.key != null) {
                 return false;

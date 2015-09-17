@@ -18,7 +18,7 @@ public class EventModel implements Serializable {
     /**
      * Event ID container
      */
-    private int eventID;
+    private long eventID;
     /**
      *  Event Name container.
      */
@@ -31,13 +31,13 @@ public class EventModel implements Serializable {
     /**
      * @return the event ID
      */
-    public int getEventID(){
+    public long getEventID(){
         return eventID;
     }
     /**
      * @param id the eventID to set
      */
-    public void setEventID(int id){
+    public void setEventID(long id){
         this.eventID = id;       
     }
     /**

@@ -15,9 +15,9 @@ public class AddEventController extends Controller {
         EventModelDto dto = new EventModelDto();
         JSONObject obj = new JSONObject();
         try{
-            dto.setEventName("Dota MPGL is now in CIT-U!");
-            dto.setEventID(5);
-            dto.setDescription("Gather up you team and compete with other opposing teams to win this year's aegis of immortal!");
+            dto.setEventName("BIRTHDAY PARTY");
+            dto.setEventID(2);
+            dto.setDescription("bi");
             service.addEvent(dto);
         }catch(Exception e){
             

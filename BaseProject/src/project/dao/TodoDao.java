@@ -9,13 +9,16 @@ import java.util.List;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Transaction;
 
-import project.meta.TodoModelMeta;
-import project.model.TodoModel;
+import project.meta.TodoMeta;
+import project.model.Todo;
 
 public class TodoDao{
+    Key parentKey = KeyFactory.createKey("EventsPlanner", "Default");
     /**
      * Gets all todos that contains String n in its title. <br> <br>
      * Ex.<br>
@@ -25,12 +28,11 @@ public class TodoDao{
      *            the string reference
      * @return List of todos.
      */
-    public TodoModel getTodoByTitle(String title)
+    public Todo getTodoByProperty(String propertyName,Object value)
     {
-        TodoModel model= null;
-        Key key = Datastore.createKey(TodoModel.class, title);
-        model = Datastore.query(TodoModel.class).filter("title", Query.FilterOperator.EQUAL, title).asSingle();
-        //model.setKey(key);
+        Todo model= null;
+        TodoMeta meta = new TodoMeta();
+        model = Datastore.query(meta).filter(propertyName, FilterOperator.EQUAL, value).asSingle();
         return model;
         
     }
@@ -39,12 +41,11 @@ public class TodoDao{
      * 
      * @return List of todos.
      */
-    public List<TodoModel> getAllTodos()
+    public List<Todo> getAllTodos()
     {
-       Transaction trans = Datastore.beginTransaction();
-        List<TodoModel> list = (List<TodoModel>) Datastore.query(TodoModel.class).asList();
-        trans.commit();
-        return list;
+       TodoMeta meta = new TodoMeta();
+       List<Todo> models = Datastore.query(meta ,parentKey).asList();
+       return models;
     }
     /**
      * Gets all todos with particular sorting order. 
@@ -56,7 +57,7 @@ public class TodoDao{
      *            the sortingOrder of the query
      * @return List of todos.
      */
-    public List<TodoModel> getAllTodos(String sortOrder)
+    public List<Todo> getAllTodos(String sortOrder)
     {
         return null;
     }
@@ -67,53 +68,72 @@ public class TodoDao{
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean addTodo(TodoModel todo)
+    public boolean addTodo(Todo todo)
     {
         boolean ok = false;
         Transaction trans = Datastore.beginTransaction();
-        Key key = Datastore.createKey(TodoModel.class, todo.getId());
+        Key key = Datastore.allocateId(parentKey, "Todo");
         todo.setKey(key);
+        todo.setId(key.getId());
         Datastore.put(todo);
         trans.commit();
         ok = true;
         return ok;
     }
     /**
-     * Removes a Todo object in the Datastore using TodoModel. 
+     * Removes a Todo object in the Datastore using Todo. 
      *
      * @param todo
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean removeTodo(Key key)
+    public boolean removeTodo(Todo model)
     {
-        boolean ok = false;
-        Transaction trans = Datastore.beginTransaction();
-        Datastore.delete(key);
-        trans.commit();
-        ok = true;
+        boolean ok = true;
+        try{
+            Todo todo = getTodoByProperty("id",model.getId());
+            if(todo!=null){
+                Transaction tran = Datastore.beginTransaction();
+                Datastore.delete(todo.getKey());
+                tran.commit();
+            }
+            
+        }catch(Exception e){
+            
+            ok = false;
+        }
+        
         return ok;
     }
     /**
-     * Updates a Todo object in the Datastore using TodoModel. 
+     * Updates a Todo object in the Datastore using Todo. 
      *
      * @param todo
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean updateTodo(TodoModel todo)
+    public boolean updateTodo(Todo model)
     {
-        boolean ok = false;
-        Transaction trans = Datastore.beginTransaction();
-        Datastore.put(todo);
-        trans.commit();
-        ok = true;
+        boolean ok = true;
+        try{
+            Todo todo = getTodoByProperty("id",model.getId());
+            if(todo!=null){
+                Transaction tran = Datastore.beginTransaction();
+                todo.setTitle(model.getTitle());
+                todo.setDescription(model.getDescription());
+                todo.setTotal_quantity(model.getTotal_quantity());
+                Datastore.put(todo);
+                tran.commit();
+            }
+            
+        }catch(Exception e){
+            
+            ok = false;
+        }
+        
         return ok;
     }
-    public TodoModel getTodoById(String todoId) {
-        TodoModel model= null;
-        model = Datastore.query(TodoModel.class).filter("id", Query.FilterOperator.EQUAL, todoId).asSingle();
-        //model.setKey(key);
-        return model;
+    public Todo getTodoById(String todoId) {
+        return getTodoByProperty("id",todoId);
     }
 }

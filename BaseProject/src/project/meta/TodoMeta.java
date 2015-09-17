@@ -1,50 +1,50 @@
 package project.meta;
 
-//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2015-09-08 20:48:54")
+//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2015-09-15 14:44:43")
 /** */
-public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.model.TodoModel> {
+public final class TodoMeta extends org.slim3.datastore.ModelMeta<project.model.Todo> {
 
     /** */
-    public final org.slim3.datastore.StringAttributeMeta<project.model.TodoModel> description = new org.slim3.datastore.StringAttributeMeta<project.model.TodoModel>(this, "description", "description");
+    public final org.slim3.datastore.StringAttributeMeta<project.model.Todo> description = new org.slim3.datastore.StringAttributeMeta<project.model.Todo>(this, "description", "description");
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer> finished_quantity = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer>(this, "finished_quantity", "finished_quantity", int.class);
+    public final org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Integer> finished_quantity = new org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Integer>(this, "finished_quantity", "finished_quantity", int.class);
 
     /** */
-    public final org.slim3.datastore.StringAttributeMeta<project.model.TodoModel> id = new org.slim3.datastore.StringAttributeMeta<project.model.TodoModel>(this, "id", "id");
+    public final org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Long> id = new org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Long>(this, "id", "id", long.class);
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, com.google.appengine.api.datastore.Key> key = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, com.google.appengine.api.datastore.Key>(this, "__key__", "key", com.google.appengine.api.datastore.Key.class);
+    public final org.slim3.datastore.CoreAttributeMeta<project.model.Todo, com.google.appengine.api.datastore.Key> key = new org.slim3.datastore.CoreAttributeMeta<project.model.Todo, com.google.appengine.api.datastore.Key>(this, "__key__", "key", com.google.appengine.api.datastore.Key.class);
 
     /** */
-    public final org.slim3.datastore.StringAttributeMeta<project.model.TodoModel> title = new org.slim3.datastore.StringAttributeMeta<project.model.TodoModel>(this, "title", "title");
+    public final org.slim3.datastore.StringAttributeMeta<project.model.Todo> title = new org.slim3.datastore.StringAttributeMeta<project.model.Todo>(this, "title", "title");
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer> total_quantity = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Integer>(this, "total_quantity", "total_quantity", int.class);
+    public final org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Integer> total_quantity = new org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Integer>(this, "total_quantity", "total_quantity", int.class);
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Long> version = new org.slim3.datastore.CoreAttributeMeta<project.model.TodoModel, java.lang.Long>(this, "version", "version", java.lang.Long.class);
+    public final org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Long> version = new org.slim3.datastore.CoreAttributeMeta<project.model.Todo, java.lang.Long>(this, "version", "version", java.lang.Long.class);
 
-    private static final TodoModelMeta slim3_singleton = new TodoModelMeta();
+    private static final TodoMeta slim3_singleton = new TodoMeta();
 
     /**
      * @return the singleton
      */
-    public static TodoModelMeta get() {
+    public static TodoMeta get() {
        return slim3_singleton;
     }
 
     /** */
-    public TodoModelMeta() {
-        super("TodoModel", project.model.TodoModel.class);
+    public TodoMeta() {
+        super("Todo", project.model.Todo.class);
     }
 
     @Override
-    public project.model.TodoModel entityToModel(com.google.appengine.api.datastore.Entity entity) {
-        project.model.TodoModel model = new project.model.TodoModel();
+    public project.model.Todo entityToModel(com.google.appengine.api.datastore.Entity entity) {
+        project.model.Todo model = new project.model.Todo();
         model.setDescription((java.lang.String) entity.getProperty("description"));
         model.setFinished_quantity(longToPrimitiveInt((java.lang.Long) entity.getProperty("finished_quantity")));
-        model.setId((java.lang.String) entity.getProperty("id"));
+        model.setId(longToPrimitiveLong((java.lang.Long) entity.getProperty("id")));
         model.setKey(entity.getKey());
         model.setTitle((java.lang.String) entity.getProperty("title"));
         model.setTotal_quantity(longToPrimitiveInt((java.lang.Long) entity.getProperty("total_quantity")));
@@ -54,7 +54,7 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
 
     @Override
     public com.google.appengine.api.datastore.Entity modelToEntity(java.lang.Object model) {
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         com.google.appengine.api.datastore.Entity entity = null;
         if (m.getKey() != null) {
             entity = new com.google.appengine.api.datastore.Entity(m.getKey());
@@ -73,20 +73,20 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
 
     @Override
     protected com.google.appengine.api.datastore.Key getKey(Object model) {
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         return m.getKey();
     }
 
     @Override
     protected void setKey(Object model, com.google.appengine.api.datastore.Key key) {
         validateKey(key);
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         m.setKey(key);
     }
 
     @Override
     protected long getVersion(Object model) {
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         return m.getVersion() != null ? m.getVersion().longValue() : 0L;
     }
 
@@ -96,7 +96,7 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
 
     @Override
     protected void incrementVersion(Object model) {
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         long version = m.getVersion() != null ? m.getVersion().longValue() : 0L;
         m.setVersion(Long.valueOf(version + 1L));
     }
@@ -126,7 +126,7 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
 
     @Override
     protected void modelToJson(org.slim3.datastore.json.JsonWriter writer, java.lang.Object model, int maxDepth, int currentDepth) {
-        project.model.TodoModel m = (project.model.TodoModel) model;
+        project.model.Todo m = (project.model.Todo) model;
         writer.beginObject();
         org.slim3.datastore.json.Default encoder0 = new org.slim3.datastore.json.Default();
         if(m.getDescription() != null){
@@ -135,10 +135,8 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
         }
         writer.setNextPropertyName("finished_quantity");
         encoder0.encode(writer, m.getFinished_quantity());
-        if(m.getId() != null){
-            writer.setNextPropertyName("id");
-            encoder0.encode(writer, m.getId());
-        }
+        writer.setNextPropertyName("id");
+        encoder0.encode(writer, m.getId());
         if(m.getKey() != null){
             writer.setNextPropertyName("key");
             encoder0.encode(writer, m.getKey());
@@ -157,8 +155,8 @@ public final class TodoModelMeta extends org.slim3.datastore.ModelMeta<project.m
     }
 
     @Override
-    protected project.model.TodoModel jsonToModel(org.slim3.datastore.json.JsonRootReader rootReader, int maxDepth, int currentDepth) {
-        project.model.TodoModel m = new project.model.TodoModel();
+    protected project.model.Todo jsonToModel(org.slim3.datastore.json.JsonRootReader rootReader, int maxDepth, int currentDepth) {
+        project.model.Todo m = new project.model.Todo();
         org.slim3.datastore.json.JsonReader reader = null;
         org.slim3.datastore.json.Default decoder0 = new org.slim3.datastore.json.Default();
         reader = rootReader.newObjectReader("description");

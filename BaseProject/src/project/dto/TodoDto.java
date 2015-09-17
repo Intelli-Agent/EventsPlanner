@@ -16,7 +16,7 @@ private static final long serialVersionUID = 1L;
     /**
      *  Id container.
      */
-    private String id;
+    private long id;
     /**
      *  Title container.
      */
@@ -25,7 +25,7 @@ private static final long serialVersionUID = 1L;
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -174,7 +174,7 @@ private static final long serialVersionUID = 1L;
         return true;
     }
 
-    public String getId() {
+    public long getId() {
         return this.id;
     }
     

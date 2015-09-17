@@ -10,8 +10,8 @@ import org.slim3.datastore.json.ModelWriter;
 
 import project.dao.TodoDao;
 import project.dto.TodoDto;
-import project.meta.TodoModelMeta;
-import project.model.TodoModel;
+import project.meta.TodoMeta;
+import project.model.Todo;
 
 
 
@@ -36,9 +36,9 @@ public class TodoService {
      */
     public List<TodoDto> getAllTodos()
     {
-        List<TodoModel> models   = dao.getAllTodos();
+        List<Todo> models   = dao.getAllTodos();
         List<TodoDto> dtos = new ArrayList<TodoDto>();
-        for(TodoModel model : models){
+        for(Todo model : models){
             TodoDto dto = new TodoDto();
             dto.setTotal_quantity(model.getTotal_quantity());
             dto.setTitle(model.getTitle());
@@ -50,7 +50,7 @@ public class TodoService {
     }
     public TodoDto getTodoByTitle(TodoDto todo)
     {
-        TodoModel model =dao.getTodoByTitle(todo.getTitle());
+        Todo model =dao.getTodoByProperty("title",todo.getTitle());
         todo.setDescription(model.getDescription());
         todo.setKey(model.getKey());
         todo.setFinished_quantity(model.getFinished_quantity());
@@ -70,7 +70,7 @@ public class TodoService {
      *            the sortingOrder of the query
      * @return List of todos.
      */
-    public List<TodoModel> getAllTodos(String sortOrder)
+    public List<Todo> getAllTodos(String sortOrder)
     {
         return null;
     }
@@ -83,9 +83,7 @@ public class TodoService {
      */
     public boolean addTodo(TodoDto todo)
     {
-        TodoModel model = new TodoModel();
-        model.setKey(todo.getKey());
-        model.setId(UUID.randomUUID().toString());
+        Todo model = new Todo();
         model.setTitle(todo.getTitle());
         model.setDescription(todo.getDescription());
         model.setFinished_quantity(todo.getFinished_quantity());
@@ -101,8 +99,9 @@ public class TodoService {
      */
     public boolean removeTodo(TodoDto todo)
     {
-        todo.setKey(Datastore.createKey(TodoModel.class, todo.getId()));
-        return dao.removeTodo(todo.getKey());
+        Todo model = new Todo();
+        model.setId(todo.getId());
+        return dao.removeTodo(model);
     }
     /**
      * Updates a Todo object in the Datastore using TodoDao with TodoDto. 
@@ -113,8 +112,7 @@ public class TodoService {
      */
     public boolean updateTodo(TodoDto todo)
     {
-        TodoModel model = new TodoModel();
-        model.setKey(Datastore.createKey(TodoModel.class, todo.getId()));
+        Todo model = new Todo();
         model.setTitle(todo.getTitle());
         model.setTotal_quantity(todo.getTotal_quantity());
         model.setDescription(todo.getDescription());

@@ -131,6 +131,7 @@
 	    	<div class="row" id="TodoListContainer">
 		   		<table class='table table-striped table-bordered' align='center' style='width:1200px;'>
 			   		<tr>
+			   			<td class="col-md-3  text-center"><b>Type</b></td>
 			   			<td class="col-md-3  text-center"><b>Name</b></td>
 						<td class="col-md-3  text-center"><b>Description</b></td>
 						<td class="col-md-3  text-center"><b>Action</b></td>
@@ -141,7 +142,10 @@
 			   		</tr>
 			   		<tr ng-repeat = "todo in tempTodoList" ng-if="todo.title.indexOf(searchedString) > -1">
 			   			<div ng-if="")>
-			   			
+			   			<td class=" text-center">
+			   				<span ng-if="todo.total_quantity == 1"><b>ACTION</b></span>
+			   				<span ng-if="todo.total_quantity >= 2"><b>QUANTITY</b></span> 
+						</td>
 			   			<td class=" text-center">  {{todo.title}} </td> 
 						<td class=" text-center"> 	{{todo.description}}  
 							<!-- array0fObj_todoList[i].todoDescription-->
@@ -219,7 +223,7 @@
 							                </div>
 							                <br>
 							                <div class='input-group'>
-							                  <span class='input-group- on' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
+							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
 							                  <!-- Test Angular -->
 							                  <div>
 							                  <select  id="addToThisEvent" class='form-control' placeholder='To' aria-describedby='sizing-addon2'>

@@ -10,7 +10,7 @@
 var app = angular.module('eventPage', []);
 app.controller('eventController', function($scope, $http) {
 	$scope.event = {};
-	var todoList =[];
+	$scope.todoList= [];
 	$scope.tempTodoList = $scope.todoList; 
 	$scope.allTodos = [];	
 	$scope.currentTodo = null;
@@ -64,8 +64,8 @@ app.controller('eventController', function($scope, $http) {
 		
 		$http(todoInfoAJAX).
 		  then(function(response) {
-			    todoList = response.data.todoList;
-			    $scope.tempTodoList = todoList;
+			  	$scope.todoList = response.data.todoList;
+			    $scope.tempTodoList = $scope.todoList;
 			    showProgress();
 			  },
 			  function(response) {
@@ -78,9 +78,9 @@ app.controller('eventController', function($scope, $http) {
 	
 	function getTodoByID (todoID){
 		var todo = null;
-		for(var i; i < todoList.length ; i++)
-				if(todoList[i].id == todoID){
-					todo = todoList[i];
+		for(var i; i < $scope.todoList.length ; i++)
+				if($scope.todoList[i].id == todoID){
+					todo = $scope.todoList[i];
 					break;
 				}
 		return todo;
@@ -88,7 +88,7 @@ app.controller('eventController', function($scope, $http) {
 	
 	//Button triggers
 	$scope.loadModalData = function(position){
-		$scope.currentTodo = todoList[position];
+		$scope.currentTodo = $scope.todoList[position];
 	}
 	
 	//// DELETE
@@ -192,4 +192,15 @@ app.controller('eventController', function($scope, $http) {
 	}
 	loadEvent();
 	loadTodos();
+	$scope.contains = function (todo, todoList){
+		var ok = false;
+		for(var i = 0; i < todoList.length;i++){
+			if(todoList[i].id == todo.id){
+				ok = true;
+				break;
+			}
+		}
+		return ok;
+	}
 });
+

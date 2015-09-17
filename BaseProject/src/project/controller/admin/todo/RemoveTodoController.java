@@ -21,7 +21,7 @@ public class RemoveTodoController extends Controller {
             json = new JSONObject((String)this.requestScope("data"));
             todo.setTitle(json.getString("title"));
             todo.setDescription(json.getString("description"));
-            todo.setId(json.getString("id"));
+            todo.setId(json.getLong("id"));
             todo.setTotal_quantity(json.getInt("total_quantity"));
             service.removeTodo(todo);
         } catch (Exception e) {
