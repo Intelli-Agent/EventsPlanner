@@ -15,10 +15,20 @@ import project.model.EventModel;
 @Model(schemaVersion = 1)
 public class EventTodoModel implements Serializable {
     
+    private long id;
+    
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
     /**
      * Event ID container
      */
-    private int eventID;
+    private long eventID;
     /**
      * Event title container
      */
@@ -26,7 +36,7 @@ public class EventTodoModel implements Serializable {
     /**
      * TODO Id associated with specific event
      */
-    private String todoId;
+    private long todoId;
     /**
      *  Title of the Todo.
      */
@@ -53,14 +63,14 @@ public class EventTodoModel implements Serializable {
      * @return the event ID
      * 
      */
-    public int getEventID(){
+    public long getEventID(){
         return this.eventID;
     }
     /**
      * 
      * @param id the id to be set
      */
-    public void setEventID(int id){
+    public void setEventID(long id){
         this.eventID = id;
     }
     /**
@@ -80,13 +90,13 @@ public class EventTodoModel implements Serializable {
     /**
      * @return the todoId
      */
-    public String getTodoId() {
+    public long getTodoId() {
         return todoId;
     }
     /**
      * @param todoId the todoId to set
      */
-    public void setTodoId(String todoId) {
+    public void setTodoId(long todoId) {
         this.todoId = todoId;
     }
 
