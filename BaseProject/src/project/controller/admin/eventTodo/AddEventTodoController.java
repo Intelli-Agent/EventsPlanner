@@ -22,7 +22,7 @@ public class AddEventTodoController extends Controller {
           
             eventTodo.setEventID(json.getInt("eventID"));
             //eventTodo..eventTodo.eventTodo.setEventID(1);
-            eventTodo.setTodoId(json.getString("todoID"));
+            eventTodo.setTodoId(json.getLong("todoID"));
             //eventTodo.setTodoId("0");
             service.addEventTodo(eventTodo);
         }catch(Exception e){

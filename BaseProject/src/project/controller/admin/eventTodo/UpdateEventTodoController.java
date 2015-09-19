@@ -20,12 +20,13 @@ public class UpdateEventTodoController extends Controller {
         EventTodoDto eventTodo = new EventTodoDto();
         try{
             json = new JSONObject((String) this.requestScope("data"));
-            eventTodo.setEventID(json.getInt("eventID"));
+            eventTodo.setId(json.getLong("id"));
+            eventTodo.setEventID(json.getLong("eventID"));
             eventTodo.setEventTitle(json.getString("eventTitle"));
-            eventTodo.setTodoId(json.getString("todoID"));
+            eventTodo.setTodoId(json.getLong("todoID"));
             // Todo Info
             TodoDto todo = new TodoDto();
-            todo.setId(json.getString("todoID"));
+            todo.setId(json.getLong("todoID"));
             todo.setFinished_quantity(json.getInt("finished_quantity"));
             todo.setTitle(json.getString("title"));
             todo.setDescription(json.getString("description"));

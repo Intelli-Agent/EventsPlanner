@@ -14,10 +14,20 @@ import com.google.appengine.api.datastore.Key;
 public class EventTodoDto {
     
     private List<String> errorList = new ArrayList<String>();
+    
+    private long id;
+    
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     /**
      * Event ID container
      */
-    private int eventID;
+    private long eventID;
     /**
      * Event Title container
      */
@@ -26,7 +36,7 @@ public class EventTodoDto {
     /**
      * Todo Id associated with specific event
      */
-    private String todoId;
+    private long todoId;
     /**
      * 
      * @return the event ID
@@ -46,27 +56,27 @@ public class EventTodoDto {
     public void setTodo(TodoDto todo) {
         this.todo = todo;
     }
-    public int getEventID(){
+    public long getEventID(){
         return this.eventID;
     }
     /**
      * 
      * @param id the id to be set
      */
-    public void setEventID(int id){
+    public void setEventID(long id){
         this.eventID = id;
     }
     
     /**
      * @return the todoId
      */
-    public String getTodoId() {
+    public long getTodoId() {
         return todoId;
     }
     /**
      * @param todoId the todoId to set
      */
-    public void setTodoId(String todoId) {
+    public void setTodoId(long todoId) {
         this.todoId = todoId;
     }
 

@@ -9,9 +9,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
 
 import project.dto.UserDto;
-import project.meta.TodoModelMeta;
+//import project.meta.TodoModelMeta;
 import project.meta.UserModelMeta;
-import project.model.TodoModel;
+//import project.model.TodoModel;
 import project.model.UserModel;
 
 public class UserModelDao extends DaoBase<UserModel>{

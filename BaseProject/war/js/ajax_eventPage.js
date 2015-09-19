@@ -100,6 +100,7 @@ app.controller('eventController', function($scope, $http) {
 				params:{
 					'data':
 						JSON.stringify({
+								//'id':$scope.event.id,
 								'eventID':$scope.event.eventID,
 								'eventTitle': $scope.event.eventTitle,
 								'todoID':todo.id,
@@ -135,6 +136,7 @@ app.controller('eventController', function($scope, $http) {
 				params:{
 					'data':
 						JSON.stringify({
+								'id':$scope.event.id,
 								'eventID':$scope.event.eventID,
 								'eventTitle': $scope.event.eventTitle,
 								'todoID':todo.id,

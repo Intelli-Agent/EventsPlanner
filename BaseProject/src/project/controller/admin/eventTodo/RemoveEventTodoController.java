@@ -22,7 +22,7 @@ public class RemoveEventTodoController extends Controller {
             json = new JSONObject((String) this.requestScope("data"));
             eventTodo.setEventID(json.getInt("eventID"));
             eventTodo.setEventTitle(json.getString("eventTitle"));
-            eventTodo.setTodoId(json.getString("todoID"));
+            eventTodo.setTodoId(json.getLong("todoID"));
             TodoDto todo = new TodoDto();
             todo.setTitle(json.getString("title"));
             eventTodo.setTodo(todo);

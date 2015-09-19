@@ -9,9 +9,9 @@ import com.google.appengine.api.datastore.Transaction;
 
 import project.dao.UserModelDao;
 import project.dto.UserDto;
-import project.meta.TodoModelMeta;
+import project.meta.TodoMeta;
 import project.meta.UserModelMeta;
-import project.model.TodoModel;
+import project.model.Todo;
 import project.model.UserModel;
 
 
