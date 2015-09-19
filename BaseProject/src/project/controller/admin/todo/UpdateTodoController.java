@@ -15,7 +15,7 @@ public class UpdateTodoController extends Controller {
         TodoDto todo = new TodoDto();
         
         try {
-            json = new JSONObject((String)this.requestScope("data"));
+            json = new JSONObject(this.request.getReader().readLine());
             todo.setTitle(json.getString("title"));
             todo.setDescription(json.getString("description"));
             todo.setId(json.getLong("id"));

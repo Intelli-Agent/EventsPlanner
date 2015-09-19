@@ -10,7 +10,6 @@ import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Transaction;
 
@@ -133,7 +132,7 @@ public class TodoDao{
         
         return ok;
     }
-    public Todo getTodoById(String todoId) {
-        return getTodoByProperty("id",todoId);
+    public Todo getTodoById(long l) {
+        return getTodoByProperty("id",l);
     }
 }

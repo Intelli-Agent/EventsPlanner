@@ -1,16 +1,8 @@
 package project.service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import org.slim3.datastore.Datastore;
-import org.slim3.datastore.ModelListener;
-import org.slim3.datastore.json.JsonWriter;
-import org.slim3.datastore.json.ModelWriter;
-
 import project.dao.TodoDao;
 import project.dto.TodoDto;
-import project.meta.TodoMeta;
 import project.model.Todo;
 
 

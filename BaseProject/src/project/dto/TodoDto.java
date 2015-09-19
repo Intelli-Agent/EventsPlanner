@@ -23,10 +23,10 @@ private static final long serialVersionUID = 1L;
     
     private String title;
     /**
-     * @param id the id to set
+     * @param string the id to set
      */
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long string) {
+        this.id = string;
     }
 
     /**

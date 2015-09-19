@@ -12,13 +12,12 @@ public class RemoveTodoController extends Controller {
     int counter = 0;
     @Override
     public Navigation run() throws Exception {
-        System.out.println((String)this.requestScope("data"));
         TodoService service = new TodoService();
         JSONObject json = new JSONObject();
         TodoDto todo = new TodoDto();
         
         try {
-            json = new JSONObject((String)this.requestScope("data"));
+            json = new JSONObject(this.request.getReader().readLine());
             todo.setTitle(json.getString("title"));
             todo.setDescription(json.getString("description"));
             todo.setId(json.getLong("id"));
