@@ -13,10 +13,10 @@ import com.google.appengine.api.datastore.Key;
 import project.meta.EventModelMeta;
 import project.model.EventModel;
 
-public class EventModelDao extends DaoBase<EventModel>{
+public class EventModelDao {
     
     
-    Datastore db;
+    
     Key parentKey = KeyFactory.createKey("EventsPlanner", "Default");
     /**
      * Gets all events that contains String n in its title. <br> <br>
@@ -39,10 +39,7 @@ public class EventModelDao extends DaoBase<EventModel>{
      */
     public List<EventModel> getAllEvent()
     {
-        Transaction trans = Datastore.beginTransaction();
-        List<EventModel> list = (List<EventModel>) Datastore.query(EventModel.class).asList();
-        trans.commit();
-        return list;
+        return (List<EventModel>) Datastore.query((new EventModelMeta())).asList();
     }
     /**
      * Gets all events with particular sorting order.
@@ -56,7 +53,7 @@ public class EventModelDao extends DaoBase<EventModel>{
      */
     public EventModel getEvent(long id){
         EventModel model = new EventModel();
-        model = Datastore.query(EventModel.class).filter("eventID", Query.FilterOperator.EQUAL, id).asSingle();
+        model = Datastore.query((new EventModelMeta())).filter("eventID", Query.FilterOperator.EQUAL, id).asSingle();
         return model;
         /*EventModelMeta event = new EventModelMeta();
         return Datastore.query(event, parentKey).filter("eventID", Query.FilterOperator.EQUAL, id).asSingle();
@@ -73,7 +70,7 @@ public class EventModelDao extends DaoBase<EventModel>{
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean addEvent(EventModel event)
+    public EventModel addEvent(EventModel event)
     {
         boolean ok = true;
         /*Transaction trans = Datastore.beginTransaction();
@@ -86,13 +83,14 @@ public class EventModelDao extends DaoBase<EventModel>{
             Transaction trans = Datastore.beginTransaction();
             Key key = Datastore.allocateId(parentKey, "EventModel");
             event.setKey(key);
-            //event.setEventID(key.getId());
+            event.setEventID(key.getId());
             Datastore.put(event);
             trans.commit();
+            return event;
         } catch (Exception e) {
             ok = false;
         }
-        return ok;
+        return null;
     }
     /**
      * Removes an Event object in the Datastore using EventDto.

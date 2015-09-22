@@ -73,14 +73,15 @@ public class TodoService {
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean addTodo(TodoDto todo)
+    public TodoDto addTodo(TodoDto todo)
     {
         Todo model = new Todo();
         model.setTitle(todo.getTitle());
         model.setDescription(todo.getDescription());
         model.setFinished_quantity(todo.getFinished_quantity());
         model.setTotal_quantity(todo.getTotal_quantity());
-        return dao.addTodo(model);
+        todo.setId(dao.addTodo(model).getId());
+        return todo;
     }
     /**
      * Removes a Todo object in the Datastore using TodoDao with TodoDto. 

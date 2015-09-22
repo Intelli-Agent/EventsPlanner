@@ -12,18 +12,13 @@ public class AddEventTodoController extends Controller {
 
     @Override
     protected Navigation run() throws Exception {
-        // TODO Auto-generated method stub
         EventTodoService service = new EventTodoService();
         JSONObject json = new JSONObject();
         EventTodoDto eventTodo = new EventTodoDto();
-        String requestParam = this.request.getParameter("data");
         try{
-            json = new JSONObject((String) this.requestScope("data"));
-          
+            json = new JSONObject(this.request.getReader().readLine());
             eventTodo.setEventID(json.getInt("eventID"));
-            //eventTodo..eventTodo.eventTodo.setEventID(1);
             eventTodo.setTodoId(json.getLong("todoID"));
-            //eventTodo.setTodoId("0");
             service.addEventTodo(eventTodo);
         }catch(Exception e){
             e.printStackTrace();

@@ -7,6 +7,7 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.repackaged.org.json.JSONObject;
 
+import project.dto.EventTodoDto;
 import project.dto.TodoDto;
 import project.service.EventTodoService;
 
@@ -17,7 +18,7 @@ public class GetTodoListController extends Controller {
         EventTodoService service = new EventTodoService();
         JSONObject json = new JSONObject();
         List<String> errorList = new ArrayList<String>();
-        List<TodoDto> todoList = null;
+        List<EventTodoDto> todoList = null;
         try{
             String requestParameter = this.request.getParameter("eventID");
             int eventId = Integer.parseInt(requestParameter);

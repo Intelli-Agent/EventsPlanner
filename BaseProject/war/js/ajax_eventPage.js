@@ -9,43 +9,48 @@
 
 var app = angular.module('eventPage', []);
 app.controller('eventController', function($scope, $http) {
+	$scope.numericalProgress = 0;
 	$scope.event = {};
 	$scope.todoList= [];
 	$scope.tempTodoList = $scope.todoList; 
 	$scope.allTodos = [];	
 	$scope.currentTodo = null;
-	
-	function showProgress() {
-		var progress = getProgess();
-		$('progress').val(0).animate({ value: progress }, { duration: 2000, easing: 'easeOutCirc' });	
+	$scope.errorList = [];
+	$scope.showProgress = function () {
+		var progress = $scope.getProgess();
+		$('progress').val(0).animate({ value: progress }, { duration: 2000, easing: 'easeOutCirc' });
+		
 	};
-	function getProgess() {
+	$scope.getProgess = function () {
 		var totalProgress = 0;
 		var taskRatio = 100 / $scope.tempTodoList.length;
 		for(var i = 0; i < $scope.tempTodoList.length; i++) {
-			totalProgress += ($scope.tempTodoList[i].finished_quantity / $scope.tempTodoList[i].total_quantity) * taskRatio;
+			totalProgress += ($scope.tempTodoList[i].todo.finished_quantity / $scope.tempTodoList[i].todo.total_quantity) * taskRatio;
 		}
+		$scope.numericalProgress = Math.round(totalProgress * 100) / 100;
+		
 		return totalProgress;
 	};
 	// USED for getting GET url parameters
-	function getParameterByName(name) {
+	$scope.getParameterByName = function (name) {
 	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 	        results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-	function loadTodos(){
-		$http.get("http://localhost:8888/admin/todo/getAllTodos")
+	$scope.loadTodos = function (){
+		$http.get("/admin/todo/getAllTodos")
 	    .success(function(response) {
 	    	$scope.allTodos = response.todos;
 	    });
 	};
 	
-	function loadEvent(){
-		var eventId = getParameterByName('event');
+	$scope.loadEvent = function(){
+		
+		var eventId = $scope.getParameterByName('event');
 		var eventInfoAJAX = {
 					 method: 'GET',
-					 url: 'http://localhost:8888/admin/event/get',
+					 url: '/admin/event/get',
 					 params: { 'eventId' : eventId }
 					};
 		$http(eventInfoAJAX).
@@ -56,148 +61,116 @@ app.controller('eventController', function($scope, $http) {
 				    alert(response);
 			  })
 		   ;
-		var todoInfoAJAX = {
-			method: 'GET',
-			url: 'http://localhost:8888/admin/eventTodo/getTodoList',
-			params: { 'eventID' : eventId }	
-		};
-		
-		$http(todoInfoAJAX).
-		  then(function(response) {
-			  	$scope.todoList = response.data.todoList;
+		var todoListPromise = $http.get('/admin/eventTodo/getTodoList?eventID='+ eventId );
+		todoListPromise.success(function(response){
+				$scope.todoList = response.todoList;
 			    $scope.tempTodoList = $scope.todoList;
-			    showProgress();
-			  },
-			  function(response) {
-				    console.log("An error has occurred in loading the TODO list.");
-			  })
-		   ;
-		
-		
+			    $scope.showProgress();
+			});
+		todoListPromise.error(function(response){
+			$scope.errorList = ['Not connected to server.','An error has occurred in loading the TODO list.'];
+		});
 	}
 	
-	function getTodoByID (todoID){
+	$scope.getTodoByID = function (eventTodoId){
 		var todo = null;
-		for(var i; i < $scope.todoList.length ; i++)
-				if($scope.todoList[i].id == todoID){
-					todo = $scope.todoList[i];
+		for(var i = 0; i < $scope.tempTodoList.length ; i++)
+				if($scope.tempTodoList[i].id == eventTodoId){
+					todo = $scope.tempTodoList[i];
 					break;
 				}
 		return todo;
 	};
-	
+	$scope.toggleCheckBoxThenUpdate = function(eventTodoId){
+		for(var i = 0; i < $scope.tempTodoList.length ; i++)
+			if($scope.tempTodoList[i].id == eventTodoId){
+				var todo = $scope.tempTodoList[i].todo;
+				var ok = todo.finished_quantity == 1;
+				
+				if( ok )
+					$scope.tempTodoList[i].todo.finished_quantity = 0;
+				else 
+					$scope.tempTodoList[i].todo.finished_quantity = 1;
+				break;
+			}
+		$scope.updateTodo(eventTodoId);
+		
+	}
 	//Button triggers
-	$scope.loadModalData = function(position){
-		$scope.currentTodo = $scope.todoList[position];
+	$scope.loadModalData = function(id){
+		$scope.currentTodo = $scope.getTodoByID(id);
 	}
 	
 	//// DELETE
 	$scope.removeTodo = function(){
+		$scope.errorList = [];
 		var todo = $scope.currentTodo;
-		var req = {
-				url: "http://localhost:8888/admin/eventTodo/removeEventTodo",
-				method:"POST",
-				params:{
-					'data':
-						JSON.stringify({
-								//'id':$scope.event.id,
-								'eventID':$scope.event.eventID,
-								'eventTitle': $scope.event.eventTitle,
-								'todoID':todo.id,
-								'title':todo.title
-						})
-					}
-					
+		var data = {
+				'id':todo.id
 			};
-			$http(req).then(
-					function(response){
-						if(response.data.errorList.length == 0){
-							loadTodos();
-							loadEvent();
-							alert("Todo Removal was successful!");
-							$('#deleteModaNew').modal('toggle');
-						}
-						else
-							alert("Something's wrong! Please try again later.");	
-					},
-					function(response){
-						alert("Can't connect to server.");
-					}
-			);
+		var deletePromise = $http.post('/admin/eventTodo/removeEventTodo', data);
+		deletePromise.success(function(data, status, headers, config) {
+			if(data.errorList.length == 0){
+				$scope.loadTodos();
+				alert("Todo Removal was successful!");
+				$('#deleteModaNew').modal('toggle');
+			}
+			else
+				$scope.errorList = data.errorList;
+			$scope.loadEvent();
+		});
+		deletePromise.error(function(data, status, headers, config) {
+			$scope.errorList = ['Not connected to server.'];
+		});
 	};
 	///// EDIT
-	$scope.updateTodo = function (position){
-		var todo = $scope.tempTodoList[position];
-		if(todo.finished_quantity == true)
-			todo.finished_quantity = 1;
-		var req = {
-				url: "http://localhost:8888/admin/eventTodo/updateEventTodo",
-				method:"POST",
-				params:{
-					'data':
-						JSON.stringify({
-								'id':$scope.event.id,
-								'eventID':$scope.event.eventID,
-								'eventTitle': $scope.event.eventTitle,
-								'todoID':todo.id,
-								'finished_quantity':todo.finished_quantity,
-								'title':todo.title,
-								'description':todo.description,
-								'total_quantity':todo.total_quantity
-						})
-					}
-					
-			};
-			$http(req).then(
-					function(response){
-						if(response.data.errorList.length == 0){
-							loadTodos();
-							loadEvent();
-							alert("Update was successful!");
-						}
-						else
-							alert("Something's wrong! Please try again later.");	
-					},
-					function(response){
-						alert("Can't connect to server.");
-					}
-			);
+	$scope.updateTodo = function (eventTodoId){
+		$scope.errorList = [];
+		var eventTodo = $scope.getTodoByID(eventTodoId)
+		var updatePromise = $http.post('/admin/eventTodo/updateEventTodo', eventTodo);
+		updatePromise.success(function(data, status, headers, config) {
+			if(data.errorList.length == 0){
+				$scope.loadTodos();
+				alert("Update was successful!");
+			}
+			else
+				$scope.errorList = data.errorList;
+				$scope.loadEvent();
+			});
+		updatePromise.error(function(data, status, headers, config) {
+			$scope.errorList = ['Not connected to server.'];
+		});
+		
 	};
 	///// ADD
 	$scope.addTodoToThisEvent = function (todoID){
-		var req = {
-			url: "http://localhost:8888/admin/eventTodo/addEventTodo",
-			method:"POST",
-			params:{
-				'data':
-					JSON.stringify({
-							'eventID':$scope.event.eventID,
-							'todoID':todoID,	
-					})
-				}
-				
-		};
-		$http(req).then(
-				function(response){
-					if(response.data.errorList.length == 0){
-						loadTodos();
-						loadEvent();
-						alert("Adding of Todo was successful!");
-					}
-					else
-						alert("Something's wrong! Please try again later.");	
-				},
-				function(response){
-					alert("Can't connect to server.");
-				}
-		);
+		$scope.errorList = [];
+		var todo = $scope.currentTodo;
+		var data = {
+				'eventID':$scope.event.eventID,
+				'todoID':todoID,
+			};
+		var addPromise = $http.post('/admin/eventTodo/addEventTodo', data);
+		addPromise.success(function(data, status, headers, config) {
+			if(data.errorList.length == 0){
+				$scope.loadTodos();
+				alert("Adding of Todo was successful!");
+			}
+			else
+				$scope.errorList = data.errorList;
+			$scope.loadEvent();
+		});
+		addPromise.error(function(data, status, headers, config) {
+			$scope.errorList = ['Not connected to server.'];
+		});
+		
 	}
-	loadEvent();
-	loadTodos();
+	$scope.loadEvent();
+	$scope.loadTodos();
 	$scope.contains = function (todo, todoList){
 		var ok = false;
 		for(var i = 0; i < todoList.length;i++){
-			if(todoList[i].id == todo.id){
+			if(todoList[i].todo.id == todo.id){
 				ok = true;
 				break;
 			}

@@ -100,7 +100,7 @@
 		    
 		    <div class="form-inline">
 		    <div class='input-group col-md-5 text-left'>
-				<input ng-model="searchedString" ng-changed="search()" type="text" class="form-control" name="search" id="search" placeholder="Search">
+				<input ng-model="searchedString" ng-changed="change(searchedString)" type="text" class="form-control" name="search" id="search" placeholder="Search">
 				<span class="glyphicon glyphicon-search form-control-feedback"></span>
 				                  
 			</div>
@@ -110,7 +110,7 @@
 				    		&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="category" value="Quantity" id="Quantity" ng-click="getQuantity()">Quantity
 			</div>
 			<div class="input-group col-md-3 text-right" >
-				<button ng-click="loadAddModalData(todo.id)" type="button" class="btn btn-primary " data-toggle="modal" data-target="#addModaNew">
+				<button ng-click="initializeTodoInfo()" type="button" class="btn btn-primary " data-toggle="modal" data-target="#addModaNew">
 						  + Add Todo
 				</button>	
 				<!-- <a href='/plusTodo'> -->
@@ -140,7 +140,8 @@
 			   			<td colspan='5' align='center'><br>There are no available todos right now.<br><br>
 			   			</td>
 			   		</tr>
-			   		<tr ng-repeat = "todo in tempTodoList" ng-if="todo.title.indexOf(searchedString) > -1">
+			   		<tr ng-repeat = "todo in tempTodoList" ng-if="isValid(todo.title)">
+			   		<!-- <tr ng-repeat = "todo in tempTodoList" ng-if="todo.title.indexOf(searchedString) > -1"> -->
 			   			<div ng-if="")>
 			   			<td class=" text-center">
 			   				<span ng-if="todo.total_quantity == 1"><b>ACTION</b></span>
@@ -228,9 +229,12 @@
 							                  <div>
 							                  <select  id="addToThisEvent" class='form-control' placeholder='To' aria-describedby='sizing-addon2'>
 							                  		<option ng-click="checkSelected('NONE')" value="NONE"> None </option>
-													<option ng-click="checkSelected(event.eventID)" ng-repeat="event in allEvents" value="{{event.eventID}}">{{event.eventName}}</option>
+													<option ng-click="checkSelected(event.eventID)" ng-repeat="event in availableEvents" value="{{event.eventID}}">{{event.eventName}}</option>
 												</select>
 											 </div>
+							                </div>
+							                <div ng-repeat="event in selectedEvents">
+							                	{{event.eventName}} <button ng-click="notSelected(event.eventID)">X</button>
 							                </div>
 							                <br>
 							                <!--
@@ -342,129 +346,3 @@
 </body>
 
 </html>
-<!-- 
-<div id="editModal" class="modalDialog">
-	<div>
-		<a href="#close" title="Close" class="close">X</a>
-		<center><h2>Edit TODO</h2></center>
-		<br>
-		<section1 id="container">	    
-	    <div class="container">
-		   	<div class="row" >
-		   	
-		   		
-    						<div class='container' ng-model="editTodoInfo" >
-				    
-							        <form class='form-horizontal'>
-				
-							            <div class='row col-xs-6' style='margin-left:10px;'>
-							               <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
-							                  <input ng-model="todoInfo.total_quantity" id="todoQuantity" type="text" value="1" class="form-control" min="1">
-							                  
-							                </div>
-							                <br>
-							                <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
-							                  <input ng-model="todoInfo.title" id="todoTitle" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
-							                </div>
-							                <br>
-							                <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
-							                  <textarea ng-model="todoInfo.description" id="todoDescription" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
-							                </div>
-							                <br>
-							                <div class='input-group' style='margin-top:10px;'>
-							                	<input ng-click="editTodo()" id ="submitButton" type='submit' value='Save changes' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
-							                </div>
-							            </div>
-				
-							        </form>     
-							    
-							    </div>
-    	   	
-			</div>
-    	</div>
-	    
-	</section1>
-		
-	</div>
-</div>
-
-<div id="deleteModal" class="modalDialogDelete" ng-model="deleteTodoId">
-	<div>
-		<a href="#close" title="Close" class="close">X</a>
-		<h4>Delete todo</h4><br>
-		<p align="center">Are you sure you want to delete this todo?</p>
-		<center>
-		<input ng-click="deleteTodo(deleteTodoId)" type='submit' value='Delete' class='btn btn-primary' style='background:#cc3333;color:white;width:80px;'>
-		<a href="#close" title="Close">
-		<input type='submit' value='Cancel' class='btn btn-primary' style='background:#6f6f6f;color:white;width:80px;'> 
-		</a>
-		</center>
-	</div>
-</div>
-
-<div id="addModal" class="modalDialog">
-	<div>
-		<a href="#close" title="Close" class="close">X</a>
-		<center><h2>Add TODO</h2></center><br>
-			    
-	    <div class="container">
-		   	<div class="row" id="AddToDoContainer">
-		   	
-		   		
-    						<div class='container'>
-				    
-							        <form class='form-horizontal'>
-				
-							            <div class='row col-xs-6' style='margin-left:10px;'>
-							               <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
-							                  <input ng-model="todoInfo.total_quantity" id="quantity" type="number" value="1" class="form-control" min="1">
-							                </div>
-							                <br>
-							                <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
-							                  <input  ng-model="todoInfo.title" id="title" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
-							                </div>
-							                <br>
-							                <div class='input-group'>
-							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
-							                  <textarea ng-model="todoInfo.description" id= "description" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
-							                </div>
-							                <br>
-							                <div class='input-group'>
-							                  <span class='input-group- on' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
-							                  
-							                  <div>
-							                  <select ng-click="checkSelected()" id="addToThisEvent" class='form-control' placeholder='To' aria-describedby='sizing-addon2'>
-							                  		<option value="NONE"> None </option>
-													<option ng-repeat="event in allEvents" value="{{event.eventID}}">{{event.eventName}}</option>
-												</select>
-											 </div>
-							                </div>
-							                <br>
-							                <div class='input-group' style='margin-top:10px;'>
-							                    <input ng-click="addTodo()" id ="submitButton" type='submit' value='Add' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
-							                </div>
-							            </div>
-				
-							        </form>     
-							    
-							    </div>    
-    	   	
-			</div>
-    	</div>
-	    
-	
-	</div>
-</div>
-    
-    
-
-
-
-
- -->
- 

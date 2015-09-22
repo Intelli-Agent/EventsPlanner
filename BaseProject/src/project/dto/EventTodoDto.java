@@ -161,7 +161,7 @@ public class EventTodoDto {
     public JSONObject toJSON() throws JSONException
     {
         JSONObject json = new JSONObject();
-        json.put("key", this.getKey());
+        //json.put("key", this.getKey());
         json.put("eventID",this.getEventID());
         json.put("todoId", this.getTodoId());
         json.put("todo", this.getTodo());

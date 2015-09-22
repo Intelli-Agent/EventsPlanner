@@ -21,7 +21,7 @@ public class AddTodoController extends Controller {
             todo.setDescription(json.getString("description"));
             todo.setFinished_quantity(0);
             todo.setTotal_quantity(json.getInt("total_quantity"));
-            service.addTodo(todo);
+            todo = service.addTodo(todo);
         } catch (Exception e) {
             e.printStackTrace();
             todo.getErrorList().add("Server controller error: " + e.getMessage());

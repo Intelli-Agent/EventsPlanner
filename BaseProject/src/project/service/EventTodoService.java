@@ -30,12 +30,9 @@ public class EventTodoService {
         model.setTodoTitle(todo.getTitle());
         model.setTodoDescription(todo.getDescription());
         model.setTodoTotal_quantity(todo.getTotal_quantity());
-        //Key key = Datastore.createKey(EventTodoModel.class, model.getEventTitle() + model.getTodoTitle());
-        //model.setKey(key);
         return dao.addEventTodo(model);
     }
     public boolean removeEventTodo(EventTodoDto et){
-        //Key key = Datastore.createKey(EventTodoModel.class, et.getEventTitle() + et.getTodo().getTitle());
         EventTodoModel etm = new EventTodoModel();
         etm.setId(et.getId());
         return dao.removeEventTodo(etm);
@@ -45,34 +42,36 @@ public class EventTodoService {
         model.setId(et.getId());
         model.setEventID(et.getEventID());
         model.setTodoId(et.getTodoId());
-        model.setEventTitle((new EventModelDao()).getEvent(model.getEventID()).getEventName());
-       
+        model.setEventTitle(et.getEventTitle());
         //TodoModel 
-        TodoDto todo = et.getTodo();//(new TodoDao()).getTodoById(model.getTodoId());
+        TodoDto todo = et.getTodo();
         model.setTodoTitle(todo.getTitle());
         model.setTodoDescription(todo.getDescription());
         model.setTodoTotal_quantity(todo.getTotal_quantity());
         model.setTodoFinished_quantity(todo.getFinished_quantity());
-        //Key key = Datastore.createKey(EventTodoModel.class, et.getEventTitle() + et.getTodo().getTitle());
-        //model.setKey(key);
         return dao.updateEventTodo(model);
     }
-    public List<TodoDto> getAllTodosByEventID(int eventId){
-        List<TodoDto> todoList = new ArrayList<TodoDto> ();
+    public List<EventTodoDto> getAllTodosByEventID(int eventId){
         List<EventTodoModel> models = dao.getAllEventTodoWithEventID(eventId);
-        for(int i=0;i<models.size();i++){
-            TodoDto todo = new TodoDto();
-            EventTodoModel model = models.get(i);
-            todo.setId(model.getId());
-            todo.setTitle(model.getTodoTitle());
-            todo.setDescription(model.getTodoDescription());
-            todo.setFinished_quantity(model.getTodoFinished_quantity());
-            todo.setId(model.getTodoId());
-            todo.setTotal_quantity(model.getTodoTotal_quantity());
-            todoList.add(todo);
+        List<EventTodoDto> dtos = new ArrayList<EventTodoDto>();
+        
+        for(EventTodoModel model : models)
+        {
+            EventTodoDto dto = new EventTodoDto();
+            dto.setId(model.getId());
+            dto.setEventID(model.getEventID());
+            dto.setEventTitle(model.getEventTitle());
+            dto.setTodoId(model.getTodoId());
+                TodoDto todo = new TodoDto();
+                todo.setId(model.getTodoId());
+                todo.setFinished_quantity(model.getTodoFinished_quantity());
+                todo.setTitle(model.getTodoTitle());
+                todo.setTotal_quantity(model.getTodoTotal_quantity());
+                todo.setDescription(model.getTodoDescription());
+            dto.setTodo(todo);
+            dtos.add(dto);
         }
         
-        
-        return todoList;
+        return dtos;
     }
 }

@@ -31,10 +31,7 @@ public class EventTodoModelDao extends DaoBase<EventTodoModel>{
      */
     public List<EventTodoModel> getAllEventTodo(){
         EventTodoModelMeta meta = new EventTodoModelMeta();
-        Transaction trans = Datastore.beginTransaction();
-        List<EventTodoModel> list = (List<EventTodoModel>) Datastore.query(meta).asList();
-        trans.commit();
-        return list;
+        return (List<EventTodoModel>) Datastore.query(meta).asList();
     }
     /**
      * Gets a list of all event todos in a specific sort order
@@ -51,17 +48,15 @@ public class EventTodoModelDao extends DaoBase<EventTodoModel>{
      */
     public boolean addEventTodo(EventTodoModel et){
         boolean ok = false;
-        
-        Transaction trans = Datastore.beginTransaction();
-        Key key = Datastore.allocateId(parentKey, "EventTodoModel");
-        
-        et.setKey(key);
-        et.setId(key.getId());
-        //et.setEventID(key.getId());
-        
-        Datastore.put(et);
-        trans.commit();
-        ok = true;
+        if(getEventTodoModelByTodoId(et.getEventID(),et.getTodoId())==null){
+            Key key = Datastore.allocateId(parentKey, "EventTodoModel");
+            Transaction trans = Datastore.beginTransaction();
+            et.setKey(key);
+            et.setId(key.getId());
+            Datastore.put(et);
+            trans.commit();
+            ok = true;
+        }
         return ok;
     }
     /**
@@ -70,19 +65,17 @@ public class EventTodoModelDao extends DaoBase<EventTodoModel>{
      * @return whether the transaction is successful
      */
     public boolean removeEventTodo(EventTodoModel et){
-        boolean ok = false;
+        boolean ok = true;
         
         try{
             EventTodoModel etm = getEventTodoModelById(et.getId());
             if(etm != null){
                 Transaction  trans = Datastore.beginTransaction();
                 Datastore.delete(etm.getKey());
-                
                 trans.commit();
-                ok = true;
             }
         }catch(Exception e){
-            
+            ok = false;
         }
         
         return ok;
@@ -93,48 +86,44 @@ public class EventTodoModelDao extends DaoBase<EventTodoModel>{
      * @return whether the transaction is successful
      */
     public boolean updateEventTodo(EventTodoModel et){
-        boolean ok = false;
+        boolean ok = true;
         
         try{
            EventTodoModel etm = getEventTodoModelById(et.getId());
           
             if(etm != null){
-               //System.out.println(""+etm.getTodoFinished_quantity());
                 Transaction  trans = Datastore.beginTransaction();
                 etm.setEventTitle(et.getEventTitle());
                 etm.setTodoDescription(et.getTodoDescription());
                 etm.setTodoFinished_quantity(et.getTodoFinished_quantity());
-                
                 etm.setTodoTitle(et.getTodoTitle());
                 Datastore.put(etm);
                 trans.commit();
-                ok = true;
             }
         }catch(Exception e){
-            
+            ok = false;
         }
-        //Transaction  trans = Datastore.beginTransaction();
-        //Datastore.put(et);
-        //trans.commit();
-        //ok = true;
         return ok;
     }
     
     public EventTodoModel getEventTodoModelById(long id){
         EventTodoModelMeta meta = new EventTodoModelMeta();
-        //Transaction trans = Datastore.beginTransaction();
-        EventTodoModel etm = (EventTodoModel) Datastore.query(meta).filter("ID/Name",FilterOperator.EQUAL, id).asSingle();
-        //trans.commit();
+        EventTodoModel etm = (EventTodoModel) Datastore.query(meta).filter("id",FilterOperator.EQUAL, id).asSingle();
+        return etm;
+    }
+    public EventTodoModel getEventTodoModelByTodoId(long eventId, long id){
+        EventTodoModelMeta meta = new EventTodoModelMeta();
+        EventTodoModel etm = (EventTodoModel) Datastore.query(meta)
+                                                       .filter("todoId",FilterOperator.EQUAL, id)
+                                                       .filter("eventID",FilterOperator.EQUAL,eventId)
+                                                       .asSingle();
         return etm;
     }
     
     
     public List<EventTodoModel> getAllEventTodoWithEventID(long eventId) {
         EventTodoModelMeta meta = new EventTodoModelMeta();
-        Transaction trans = Datastore.beginTransaction();
-        List<EventTodoModel> list = (List<EventTodoModel>) Datastore.query(meta)
+        return (List<EventTodoModel>) Datastore.query(meta)
                 .filter("eventID",FilterOperator.EQUAL,eventId).asList();
-        trans.commit();
-        return list;
     }
 }

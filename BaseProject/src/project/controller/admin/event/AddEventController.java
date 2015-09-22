@@ -13,16 +13,17 @@ public class AddEventController extends Controller {
     public Navigation run() throws Exception {
         EventService service = new EventService();
         EventModelDto dto = new EventModelDto();
-        JSONObject obj = new JSONObject();
+        JSONObject json = new JSONObject();
         try{
-            dto.setEventName("BIRTHDAY PARTY");
-            dto.setEventID(2);
-            dto.setDescription("bi");
-            service.addEvent(dto);
+            json = new JSONObject(this.request.getReader().readLine());
+            dto.setEventName(json.getString("eventName"));
+            dto.setDescription(json.getString("description"));
+            json.put("EventId", service.addEvent(dto).getEventID());
         }catch(Exception e){
-            
-            
         }
+        response.setContentType("application/json");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.getWriter().write(json.toString());
         return null;
     }
 }

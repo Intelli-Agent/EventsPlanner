@@ -99,6 +99,7 @@
 				</button>
 				</a>
 		    	<h1>{{event.eventTitle}} Todo List</h1>
+		    	<h3>Task Completion: <b>{{numericalProgress}}%</b></h3>
 		    </div>
 		    <table style="width:100%">
 		    	<tr>
@@ -137,42 +138,45 @@
 					<td><b>Action</b></td>
 					</tr>
 					<tr ng-if="tempTodoList.length == 0"><td colspan='5' align='center'><br>There are no available todos right now.<br><br></td></tr><tr><td colspan='5'></td></tr>
+					<tr ng-repeat= "error in errorList">
+						<td colspan="5" class="danger">{{error}}</td>
+					</tr>
 					
 					<!-- Headers -->
-					<tr   ng-repeat="x in tempTodoList" ng-if="x.title.indexOf(searchedString) > -1">
+					<tr   ng-repeat="x in tempTodoList" ng-if="x.todo.title.indexOf(searchedString) > -1">
 							<input type="hidden" value="{{x.id}}" name="todoId">
 							<td>
-								<input ng-disabled="x.total_quantity == x.finished_quantity" 
-									   ng-if="x.total_quantity > 1"
-									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
-									   ng-click="updateTodo(tempTodoList.indexOf(x))" 
+								<input  
+									   ng-if="x.todo.total_quantity > 1"
+									   ng-model="x.todo.finished_quantity"
+									   ng-click="updateTodo(x.id)" 
 									   type='number' 
-									   value={{x.finished_quantity}} 
+									   value={{x.todo.finished_quantity}} 
 									   style='width:40px;' 
 									   min='0' 
-									   max={{x.total_quantity}}>
+									   >
 									   
-								<input ng-if="x.total_quantity == 1"
-									   ng-disabled="x.total_quantity == x.finished_quantity" 
-									   ng-click="updateTodo(tempTodoList.indexOf(x))"
-									   ng-model="tempTodoList[tempTodoList.indexOf(x)].finished_quantity"
-									   ng-checked="x.total_quantity == x.finished_quantity" 
-									   type='checkbox'  >
+								<input id = "{{x.id}}" ng-if="x.todo.total_quantity == 1"
+									    
+									   ng-click="toggleCheckBoxThenUpdate(x.id)"
+									   ng-bind="x.todo.finished_quantity"
+									   ng-checked="x.todo.total_quantity == x.todo.finished_quantity" 
+									   type='checkbox'  > <b ng-if="x.todo.total_quantity > 1">/{{x.todo.total_quantity}}</b>
 								
 							</td>
-							<td><h4>{{x.title}}</h4></td>
-							<td><h4>{{x.description}}</h4></td>
+							<td><h4>{{x.todo.title}}</h4></td>
+							<td><h4>{{x.todo.description}}</h4></td>
 						 	<td>
 						 		<select disabled>
-						 			<option ng-selected="x.finished_quantity ==0">New</option>
-						 			<option ng-selected="x.finished_quantity >0 && x.finished_quantity < x.total_quantity">In Progress</option>
-						 			<option ng-selected="x.finished_quantity == x.total_quantity">Finished</option>
+						 			<option ng-selected="x.todo.finished_quantity ==0">New</option>
+						 			<option ng-selected="x.todo.finished_quantity >0 && x.todo.finished_quantity < x.todo.total_quantity">In Progress</option>
+						 			<option ng-selected="x.todo.finished_quantity == x.todo.total_quantity">Finished</option>
 						 			
 						 		</select>
 						 	</td>
 						 	<td>
 						 		<!--input type='submit' ng-click="removeTodo(tempTodoList.indexOf(x))" value="X" class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'-->
-						 		<button  type="button" ng-click="loadModalData(tempTodoList.indexOf(x))" class='btn btn-danger' style='color:white;' data-toggle="modal" data-target="#deleteModaNew">
+						 		<button  type="button" ng-click="loadModalData(x.id)" class='btn btn-danger' style='color:white;' data-toggle="modal" data-target="#deleteModaNew">
 						  	X
 							</button> 
 						 	</td>

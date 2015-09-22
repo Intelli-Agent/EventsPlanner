@@ -13,6 +13,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Transaction;
 
+import project.dto.TodoDto;
 import project.meta.TodoMeta;
 import project.model.Todo;
 
@@ -67,17 +68,15 @@ public class TodoDao{
      *            the refernce to be added.
      * @return Whether transaction is succesful or not.
      */
-    public boolean addTodo(Todo todo)
-    {
-        boolean ok = false;
+    public Todo addTodo(Todo todo)
+    {      
         Transaction trans = Datastore.beginTransaction();
         Key key = Datastore.allocateId(parentKey, "Todo");
         todo.setKey(key);
         todo.setId(key.getId());
         Datastore.put(todo);
         trans.commit();
-        ok = true;
-        return ok;
+        return todo;
     }
     /**
      * Removes a Todo object in the Datastore using Todo. 

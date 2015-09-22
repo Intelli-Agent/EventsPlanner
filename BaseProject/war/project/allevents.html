@@ -34,7 +34,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" ng-controller="events">
      <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -76,31 +76,37 @@
         <!-- /.container-fluid -->
     </nav>
     <section class="bg-dark" id="Events">
-        <div class="container text-center">
+        <div class="text-center">
             <h1>Events</h1>
         </div>
     </section>
-    <div  class="contrainer" ng-controller="generateEvents">
+    <section class="container">
+    <div  class="container-fluid" >
     
-  			<div class='col-lg-3 col-md-6 text-center' ng-repeat="value in data">
+  			<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 text-center' ng-repeat="value in data">
 		       <div class='service-box'>
 		       <a href="/event?event={{value.eventID}}">
 		       <i class='fa fa-4x fa-diamond wow bounceIn text-primary'></i>
-		        </a>
 		        <h3>  {{value.eventName}}  </h3>
+		        </a>
 		       <p class='text-muted'>  {{value.description}} </p> 
 		       </div>
 		    </div>
-		                    				 
 		                    				   
     </div>
-    <section class="bg-light" id="EventList">
-        <div class="container">
-            <div class="row" id="EventListContainer" > </div>
-        </div>
+    <br><br>
+    <button class=' 
+    		col-lg-6 col-lg-offset-3
+    		col-md-6 col-md-offset-3
+    		col-sm-6 col-sm-offset-3 
+    		col-xs-12 
+    		text-center
+    		 btn btn-primary '
+		    	data-target="#addModal" data-toggle='modal'
+		    	>
+		    		<h4>  Add  </h4>
+		    </button>
     </section>
-    
-    
     <section id="contact" class="bg-dark">
         <div class="container ">
             <div class="row">
@@ -121,7 +127,59 @@
         </div>
     </section>
 
-
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Add Event</h4>
+	      </div>
+	      <div class="modal-body center-block">
+			  <div class='container-fluid '>
+				    
+				    	<h3 class="text-primary"> <i>Event Info...</i></h3>
+					    <div class="input-group">
+						    <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-th-list'></i></span>
+							<input ng-model="eventInfo.eventName" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
+						</div>
+						<br>
+						<div class="input-group">
+							<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
+							<textarea ng-model="eventInfo.description"  class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
+						</div>
+						<div class="input-group">
+							<div class='input-group'>
+								<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
+							       <div ng-model='todos'>
+							            <select  class='form-control' placeholder='To' aria-describedby='sizing-addon2'>
+							       			<option ng-if="todo.id !== todos[selectedTodo2].id" ng-click="setSelected1(todo)" ng-repeat="todo in todos" value="{{todo.id}}">{{todo.title}}</option>
+										</select>
+									</div>
+							</div>
+						</div>
+						<br>
+						<div class="input-group">
+							<div class='input-group'>
+								<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
+							       <div ng-model='todos'>
+							            <select  class='form-control' placeholder='To' aria-describedby='sizing-addon2'>
+							       			<option ng-if="todo.id !== todos[selectedTodo1].id" ng-click="setSelected2(todo)" ng-repeat="todo in todos" value="{{todo.id}}">{{todo.title}}</option>
+										</select>
+									</div>
+							</div>
+						</div>
+						<br>
+				    
+			  </div>
+		 </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button ng-click="add()" type="submit" class="btn btn-primary">Add</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
     <!-- Angular -->
     <script src="js/angular.js"></script>
     <!-- jQuery -->

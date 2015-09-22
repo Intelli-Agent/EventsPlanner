@@ -1,5 +1,8 @@
 package project.controller.admin.eventTodo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.repackaged.org.json.JSONObject;
@@ -18,28 +21,32 @@ public class UpdateEventTodoController extends Controller {
         EventTodoService service = new EventTodoService();
         JSONObject json = new JSONObject();
         EventTodoDto eventTodo = new EventTodoDto();
+        List<String> errorList = new ArrayList<String>();
         try{
-            json = new JSONObject((String) this.requestScope("data"));
+            json = new JSONObject(this.request.getReader().readLine());
             eventTodo.setId(json.getLong("id"));
             eventTodo.setEventID(json.getLong("eventID"));
             eventTodo.setEventTitle(json.getString("eventTitle"));
-            eventTodo.setTodoId(json.getLong("todoID"));
+            eventTodo.setTodoId(json.getLong("todoId"));
             // Todo Info
+            JSONObject todoJson = json.getJSONObject("todo");
             TodoDto todo = new TodoDto();
-            todo.setId(json.getLong("todoID"));
-            todo.setFinished_quantity(json.getInt("finished_quantity"));
-            todo.setTitle(json.getString("title"));
-            todo.setDescription(json.getString("description"));
-            todo.setTotal_quantity(json.getInt("total_quantity"));
-            //
+            todo.setId(todoJson.getLong("id"));
+            todo.setFinished_quantity(todoJson.getInt("finished_quantity"));
+            todo.setTitle(todoJson.getString("title"));
+            todo.setDescription(todoJson.getString("description"));
+            todo.setTotal_quantity(todoJson.getInt("total_quantity"));
+            if(todo.getFinished_quantity() > todo.getTotal_quantity())
+                throw new Exception("Invalid Update. Finished should not be greater than it's total.");
+            else{
             eventTodo.setTodo(todo);
             service.updateEventTodo(eventTodo);
+            }
         }catch(Exception e){
-            e.printStackTrace();
-            eventTodo.getErrorList().add("Server controller error: "+ e.getMessage());
+            errorList.add("Error: "+ e.getMessage());
         }
         json.put("eventTodo", eventTodo.toJSON());
-        json.put("errorList", eventTodo.getErrorList());
+        json.put("errorList",errorList);
         response.setContentType("application/json");
         response.getWriter().write(json.toString());
         return null;
