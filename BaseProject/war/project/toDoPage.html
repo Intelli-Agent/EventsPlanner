@@ -208,7 +208,7 @@
       <div class="modal-body center-block">
 		  <div class='container-fluid '>
 			    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' >
-							               <div class='input-group'>
+			    						   <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
 							                  <input ng-model="todoInfo.total_quantity" id="quantity" type="number" value="1" class="form-control" min="1">
 							                </div>
@@ -267,26 +267,21 @@
       <div class="modal-body center-block">
 		  <div class='container-fluid '>
 			    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' >
+			    	<h5>Quantity</h5>
 			   		<div class='input-group'>
 						<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
 						<input ng-model="todoInfo.total_quantity" id="todoQuantity" type="text" value="1" class="form-control" min="1">
 					</div>
-					<br>
+					<h5>Title</h5>
 					<div class='input-group'>
 						<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
 							<input ng-model="todoInfo.title" id="todoTitle" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
 					</div>
-					<br>
+					<h5>Description</h5>
 					<div class='input-group'>
 						<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
 						<textarea ng-model="todoInfo.description" id="todoDescription" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
 					</div>
-					<br>
-					<!-- 
-					<div class='input-group' style='margin-top:10px;'>
-						<input ng-click="editTodo()" id ="submitButton" type='submit' value='Save changes' class='btn btn-primary form-control' style='background:#F05F40;color:white;border-radius:10px;'>
-					</div>
-					 -->
 				</div>
 		  </div>
       </div>

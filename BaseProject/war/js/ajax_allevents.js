@@ -10,7 +10,7 @@ app.controller('events', function($scope, $http) {
     
     
     $scope.setSelected1 = function(todo){ $scope.selectedTodo1 = getTodoIndex(todo);}
-    $scope.setSelected2 = function(todo){ $scope.selectedTodo1 = getTodoIndex(todo);}
+    $scope.setSelected2 = function(todo){ $scope.selectedTodo2 = getTodoIndex(todo);}
     
     function getTodoIndex(todo){
     	for(var i=0;i<$scope.todos.length;i++)
@@ -45,10 +45,16 @@ app.controller('events', function($scope, $http) {
     	
     };
     
-	$scope.eventInfo = {
-		eventName: '',	
-		description:''
-	};
+    $scope.eventInfo = {
+			eventName: '',	
+			description:''
+		};
+	$scope.initializeEventInfo = function(){
+			$scope.eventInfo = {
+				eventName: '',	
+				description:''
+			};
+		};
 	$scope.load = function (){
 		$http.get("/admin/event/getAll")
 	    .success(function(response) {

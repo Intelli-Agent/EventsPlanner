@@ -37,13 +37,13 @@ public class UpdateEventTodoController extends Controller {
             todo.setDescription(todoJson.getString("description"));
             todo.setTotal_quantity(todoJson.getInt("total_quantity"));
             if(todo.getFinished_quantity() > todo.getTotal_quantity())
-                throw new Exception("Invalid Update. Finished should not be greater than it's total.");
+                throw new Exception("Sorry but you can't do more to this TODO.");
             else{
             eventTodo.setTodo(todo);
             service.updateEventTodo(eventTodo);
             }
         }catch(Exception e){
-            errorList.add("Error: "+ e.getMessage());
+            errorList.add(e.getMessage());
         }
         json.put("eventTodo", eventTodo.toJSON());
         json.put("errorList",errorList);

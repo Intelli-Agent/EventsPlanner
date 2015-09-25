@@ -103,6 +103,7 @@
     		text-center
     		 btn btn-primary '
 		    	data-target="#addModal" data-toggle='modal'
+		    ng-click="initializeEventInfo()"
 		    	>
 		    		<h4>  Add  </h4>
 		    </button>
@@ -136,9 +137,7 @@
 	      </div>
 	      <div class="modal-body center-block">
 			  <div class='container-fluid '>
-				    
-				    	<h3 class="text-primary"> <i>Event Info...</i></h3>
-					    <div class="input-group">
+				    	<div class="input-group">
 						    <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-th-list'></i></span>
 							<input ng-model="eventInfo.eventName" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
 						</div>
@@ -147,6 +146,8 @@
 							<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
 							<textarea ng-model="eventInfo.description"  class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
 						</div>
+						<br>
+						<i> Initial Todos:</i>
 						<div class="input-group">
 							<div class='input-group'>
 								<span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
@@ -169,7 +170,7 @@
 							</div>
 						</div>
 						<br>
-				    
+				    	<h6> Can't find what your looking for? <a href="/todos">Click here to create more TODOS!</a></h6>
 			  </div>
 		 </div>
 	      <div class="modal-footer">

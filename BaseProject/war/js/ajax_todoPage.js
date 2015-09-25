@@ -216,7 +216,7 @@ todoPageApp.controller('todoController', function($scope, $http) {
 				$scope.loadTodos();
 				$scope.initializeTodoInfo();
 				$('#editModaNew').modal('toggle');
-				alert("Update was successful!");
+				console.log("Update was successful!");
 				
 			}
 			else

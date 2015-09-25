@@ -16,6 +16,7 @@ app.controller('eventController', function($scope, $http) {
 	$scope.allTodos = [];	
 	$scope.currentTodo = null;
 	$scope.errorList = [];
+	$scope.selectedTodos = [];
 	$scope.showProgress = function () {
 		var progress = $scope.getProgess();
 		$('progress').val(0).animate({ value: progress }, { duration: 2000, easing: 'easeOutCirc' });
@@ -38,10 +39,13 @@ app.controller('eventController', function($scope, $http) {
 	        results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	
 	$scope.loadTodos = function (){
 		$http.get("/admin/todo/getAllTodos")
 	    .success(function(response) {
 	    	$scope.allTodos = response.todos;
+	    	for(var i=0;i<$scope.allTodos.length;i++)
+	    		$scope.selectedTodos.push(false);
 	    });
 	};
 	
@@ -99,29 +103,36 @@ app.controller('eventController', function($scope, $http) {
 	//Button triggers
 	$scope.loadModalData = function(id){
 		$scope.currentTodo = $scope.getTodoByID(id);
+		$scope.errorList = [];
 	}
 	
 	//// DELETE
 	$scope.removeTodo = function(){
 		$scope.errorList = [];
-		var todo = $scope.currentTodo;
-		var data = {
-				'id':todo.id
-			};
-		var deletePromise = $http.post('/admin/eventTodo/removeEventTodo', data);
-		deletePromise.success(function(data, status, headers, config) {
-			if(data.errorList.length == 0){
-				$scope.loadTodos();
-				alert("Todo Removal was successful!");
-				$('#deleteModaNew').modal('toggle');
-			}
-			else
-				$scope.errorList = data.errorList;
-			$scope.loadEvent();
-		});
-		deletePromise.error(function(data, status, headers, config) {
-			$scope.errorList = ['Not connected to server.'];
-		});
+		if($scope.todoList.length <= 2){
+			$scope.errorList.push("Sorry but an event must have atleast 2 TODOS.");
+			$('#deleteModaNew').modal('toggle');
+		}
+		else{
+			var todo = $scope.currentTodo;
+			var data = {
+					'id':todo.id
+				};
+			var deletePromise = $http.post('/admin/eventTodo/removeEventTodo', data);
+			deletePromise.success(function(data, status, headers, config) {
+				if(data.errorList.length == 0){
+					$scope.loadTodos();
+					alert("Todo Removal was successful!");
+					$('#deleteModaNew').modal('toggle');
+				}
+				else
+					$scope.errorList = data.errorList;
+				$scope.loadEvent();
+			});
+			deletePromise.error(function(data, status, headers, config) {
+				$scope.errorList = ['Not connected to server.'];
+			});
+		}
 	};
 	///// EDIT
 	$scope.updateTodo = function (eventTodoId){
@@ -131,7 +142,7 @@ app.controller('eventController', function($scope, $http) {
 		updatePromise.success(function(data, status, headers, config) {
 			if(data.errorList.length == 0){
 				$scope.loadTodos();
-				alert("Update was successful!");
+				console.log("Update was successful!");;
 			}
 			else
 				$scope.errorList = data.errorList;
@@ -143,6 +154,13 @@ app.controller('eventController', function($scope, $http) {
 		
 	};
 	///// ADD
+	$scope.add = function(){
+		for(var i=0;i<$scope.selectedTodos.length;i++){
+			if($scope.selectedTodos[i] == true)
+				$scope.addTodoToThisEvent($scope.allTodos[i].id);
+		}
+		
+	};
 	$scope.addTodoToThisEvent = function (todoID){
 		$scope.errorList = [];
 		var todo = $scope.currentTodo;
