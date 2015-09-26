@@ -8,7 +8,6 @@ app.controller('events', function($scope, $http) {
     $scope.selectedTodo2 = 1;
     
     
-    
     $scope.setSelected1 = function(todo){ $scope.selectedTodo1 = getTodoIndex(todo);}
     $scope.setSelected2 = function(todo){ $scope.selectedTodo2 = getTodoIndex(todo);}
     

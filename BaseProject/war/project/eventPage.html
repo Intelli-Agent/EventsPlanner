@@ -115,7 +115,7 @@
 			            </form>
 		    		</td>
 		    		<td align="right">
-		    			<button  type="button" class="btn btn-primary " data-toggle="modal" data-target="#addModaNew">
+		    			<button  type="button" class="btn btn-primary " data-toggle="modal" data-target="#addModalNew">
 							 Add Todo
 						</button>
 						<!-- 	
@@ -209,7 +209,7 @@
     </section>
 <!-- MODALS -->
 <!-- ADD MODAL -->
-<div class="modal fade" id="addModaNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModalNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -223,15 +223,13 @@
 			    	
 				    >
 					<tr>
-						<th class="text-center" ><input ng-model= "checkAll" type="checkbox"></input></th>
+						<th class="text-center" ><input ng-model= "selectedAll" ng-change="checkSelectedAll()" type="checkbox"></input></th>
 						<th>Title</th>
 						<th>Description</th>
 					</tr>
 					<tr ng-repeat="todo in allTodos" ng-if="!contains(todo,todoList)">
 						<th class="text-center">
-							<input ng-model="selectedTodos[allTodos.indexOf(todo)]" type="checkbox"
-								ng-change="changeState(allTodos.indexOf(todo))"
-							></input>
+							<input ng-model="selectedTodos[allTodos.indexOf(todo)]" type="checkbox"></input>
 						</th> 
 						<td>{{todo.title}}</td>
 						<td>{{todo.description}}</td>

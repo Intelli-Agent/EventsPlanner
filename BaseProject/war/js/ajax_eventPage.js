@@ -17,6 +17,13 @@ app.controller('eventController', function($scope, $http) {
 	$scope.currentTodo = null;
 	$scope.errorList = [];
 	$scope.selectedTodos = [];
+	$scope.selectedAll = false;
+	
+	$scope.checkSelectedAll = function(){
+		for(var i = 0;i< $scope.selectedTodos.length ; i++)
+			$scope.selectedTodos[i] = $scope.selectedAll;
+	}
+	
 	$scope.showProgress = function () {
 		var progress = $scope.getProgess();
 		$('progress').val(0).animate({ value: progress }, { duration: 2000, easing: 'easeOutCirc' });
@@ -122,7 +129,6 @@ app.controller('eventController', function($scope, $http) {
 			deletePromise.success(function(data, status, headers, config) {
 				if(data.errorList.length == 0){
 					$scope.loadTodos();
-					alert("Todo Removal was successful!");
 					$('#deleteModaNew').modal('toggle');
 				}
 				else
@@ -159,7 +165,7 @@ app.controller('eventController', function($scope, $http) {
 			if($scope.selectedTodos[i] == true)
 				$scope.addTodoToThisEvent($scope.allTodos[i].id);
 		}
-		
+		$('#addModalNew').modal('toggle');
 	};
 	$scope.addTodoToThisEvent = function (todoID){
 		$scope.errorList = [];
@@ -172,7 +178,6 @@ app.controller('eventController', function($scope, $http) {
 		addPromise.success(function(data, status, headers, config) {
 			if(data.errorList.length == 0){
 				$scope.loadTodos();
-				alert("Adding of Todo was successful!");
 			}
 			else
 				$scope.errorList = data.errorList;

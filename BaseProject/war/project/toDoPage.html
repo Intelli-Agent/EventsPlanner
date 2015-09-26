@@ -155,17 +155,7 @@
 					    	<button ng-click="loadModalData(todo.id)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModaNew">
 						  	Edit
 							</button>
-			   				<!-- 
-			   				<a href='#editModal'>
-							<button ng-click="loadModalData(todo.id)" type='button' class='btn btn-primary' style='background:#6f6f6f;color:white;width:60px;' >Edit</button>
-							</a>
-							 -->
-							 <!-- 
-							<a href='#deleteModal'>
-							<button ng-click="loadModalData(todo.id)" type='button' class='btn btn-primary' style='background:#cc3333;color:white;width:35px;'> X </button>
-							<a href='#deleteModal'>
-							-->
-							<button ng-click="loadModalData(todo.id)" type="button" class='btn btn-danger' style='color:white;' data-toggle="modal" data-target="#deleteModaNew">
+			   				<button ng-click="loadModalData(todo.id)" type="button" class='btn btn-danger' style='color:white;' data-toggle="modal" data-target="#deleteModaNew">
 						  	Delete
 							</button>
 						</td>
@@ -208,21 +198,23 @@
       <div class="modal-body center-block">
 		  <div class='container-fluid '>
 			    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' >
+			    							<h5>Quantity</h5>
 			    						   <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
 							                  <input ng-model="todoInfo.total_quantity" id="quantity" type="number" value="1" class="form-control" min="1">
 							                </div>
-							                <br>
+							                <h5 class="text-danger">Title</h5>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-list-alt'></i></span>
 							                  <input  ng-model="todoInfo.title" id="title" type='text' class='form-control' placeholder='Title' aria-describedby='sizing-addon2'>
 							                </div>
-							                <br>
+							                <h5>Description</h5>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-screenshot'></i></span>
 							                  <textarea ng-model="todoInfo.description" id= "description" class='form-control' placeholder='Description' aria-describedby='sizing-addon2'></textarea>
 							                </div>
-							                <br>
+							                <hr>
+							                <h5>Add to existing event/s:</h5>
 							                <div class='input-group'>
 							                  <span class='input-group-addon' id='sizing-addon2'><i class='glyphicon glyphicon-dashboard'></i></span>
 							                  <!-- Test Angular -->
@@ -233,8 +225,13 @@
 												</select>
 											 </div>
 							                </div>
-							                <div ng-repeat="event in selectedEvents">
-							                	{{event.eventName}} <button ng-click="notSelected(event.eventID)">X</button>
+							                <div ng-repeat="event in selectedEvents" class="form">
+							                	<div class="">
+												  <span class="" ><h4>{{event.eventName}}</h4>
+												<a href="" class="text-danger" ng-click="notSelected(event.eventID)">Remove</a>
+												  </span>
+												  
+												</div>
 							                </div>
 							                <br>
 							                <!--
