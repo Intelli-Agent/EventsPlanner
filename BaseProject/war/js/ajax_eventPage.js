@@ -19,6 +19,21 @@ app.controller('eventController', function($scope, $http) {
 	$scope.selectedTodos = [];
 	$scope.selectedAll = false;
 	
+	$scope.change = function(s) {
+		
+        $scope.searchedString = angular.lowercase(s);
+      };
+      
+	$scope.isValid = function(todoTitle){
+		todoTitle = angular.lowercase(todoTitle);
+		if(todoTitle.indexOf(angular.lowercase($scope.searchedString)) > -1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	};
+	
 	$scope.checkSelectedAll = function(){
 		for(var i = 0;i< $scope.selectedTodos.length ; i++)
 			$scope.selectedTodos[i] = $scope.selectedAll;

@@ -144,7 +144,8 @@
 					</tr>
 					
 					<!-- Headers -->
-					<tr   ng-repeat="x in tempTodoList" ng-if="x.todo.title.indexOf(searchedString) > -1">
+					<tr ng-repeat = "x in tempTodoList" ng-if="isValid(x.todo.title)">
+					<!-- <tr   ng-repeat="x in tempTodoList" ng-if="x.todo.title.indexOf(searchedString) > -1">-->
 							<input type="hidden" value="{{x.id}}" name="todoId">
 							<td>
 								<input  
